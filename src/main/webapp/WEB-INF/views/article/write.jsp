@@ -56,7 +56,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="writer">작성자</label>
-                                <input class="form-control" id="writer" name="wrtier">
+                                <input class="form-control" id="writer" name="writer">
                             </div>
                         </div>
                         <div class="box-footer">

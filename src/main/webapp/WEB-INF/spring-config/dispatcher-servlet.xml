@@ -9,9 +9,15 @@
 
     <mvc:annotation-driven/> <!-- Annotation 활성화 -->
 
-
-    <!-- 정적자원 매핑 -->
+    <!--정적자원 매핑-->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/bower_components/**" location="/resources/bower_components/"/>
+    <mvc:resources mapping="/plugins/**" location="/resources/plugins/"/>
+    <mvc:resources mapping="/dist/**" location="/resources/dist/"/>
+    <!-- include로 나누니까 리소스 인식을 못해서 추가함 -->
+    <mvc:resources mapping="/article/bower_components/**" location="/resources/bower_components/"/>
+    <mvc:resources mapping="/article/plugins/**" location="/resources/plugins/"/>
+    <mvc:resources mapping="/article/dist/**" location="/resources/dist/"/>
 
     <!-- viewResolver 설정 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -21,8 +27,4 @@
 
     <context:component-scan base-package="Controller"/> <!-- Component 패키지 지정 -->
 
-    <!-- 02-Bootstrap -->
-    <mvc:resources mapping="/bower_components/**" location="/resources/bower_components/"/>
-    <mvc:resources mapping="/plugins/**" location="/resources/plugins/"/>
-    <mvc:resources mapping="/dist/**" location="/resources/dist/"/>
 </beans>

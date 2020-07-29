@@ -40,6 +40,8 @@ public class ArticleDAOImpl implements ArticleDAO {
 
     @Override
     public List<ArticleVO> listAll() throws Exception {
+        //System.out.println("ArticleDAOImpl.java");
+        //System.out.println(sqlSession.selectList(NAMESPACE+".listAll"));
         return sqlSession.selectList(NAMESPACE+".listAll");
     }
 }

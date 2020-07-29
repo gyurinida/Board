@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/article")
@@ -34,6 +35,8 @@ public class ArticleController {
     // 등록 처리
     @RequestMapping(value = "write", method = RequestMethod.POST)
     public String writePOST(ArticleVO articleVO, RedirectAttributes redirectAttributes) throws Exception{
+        Date curtime = new Date();
+        articleVO.setRegDate(curtime);
         logger.info("write POST...");
         logger.info(articleVO.toString());
         articleService.create(articleVO);
@@ -47,7 +50,7 @@ public class ArticleController {
     public String list(Model model) throws Exception{
         logger.info("list ... ");
         model.addAttribute("articles", articleService.listAll());
-
+        System.out.println(model.getAttribute("articles"));
         return "article/list";
     }
 

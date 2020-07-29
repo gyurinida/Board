@@ -38,6 +38,8 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public List<ArticleVO> listAll() throws Exception {
+        //System.out.println("ArticleServiceImpl.java");
+        //System.out.println(articleDAO.listAll());
         return articleDAO.listAll();
     }
 }

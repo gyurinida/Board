@@ -55,13 +55,13 @@
                                 <th style="width: 60px">조회</th>
                             </tr>
                             <c:forEach items="${articles}" var="article">
-                            <tr>
-                                <td>${article.articleNo}</td>
-                                <td><a href="${path}/article/read?articleNo=${article.articleNo}">${article.articleNo}</a> </td>
-                                <td>${article.writer}</td>
-                                <td><fmt:formatDate value="${article.regDate}" pattern="yyyy-MM-dd a HH:mm"/> </td>
-                                <td><span class="badge bg-red">${article.viewCnt}</span> </td>
-                            </tr>
+                                <tr>
+                                    <td>${article.articleNo}</td>
+                                    <td><a href="${path}/article/read?articleNo=${article.articleNo}">${article.title}</a></td>
+                                    <td>${article.writer}</td>
+                                    <td><fmt:formatDate value="${article.regDate}" pattern="yyyy-MM-dd a HH:mm"/></td>
+                                    <td><span class="badge bg-red">${article.viewCnt}</span></td>
+                                </tr>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -93,7 +93,7 @@
         alert("게시글 등록 성공");
     }else if(result == "modSuccess"){
         alert("게시글 수정 성공");
-    }else if(result == "delSuccess"){
+    }else if(result == "delSucces"){
         alert("게시글 삭제 성공");
     }
 </script>

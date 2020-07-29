@@ -22,6 +22,11 @@ public class ArticleDAOTest {
     private ArticleDAO articleDAO;
 
     @Test
+    public void testListAll() throws Exception{
+        System.out.println(articleDAO.listAll());
+    }
+
+    @Test
     public void testCreate() throws Exception {
         ArticleVO article = new ArticleVO();
         article.setTitle("새로운 글 작성 테스트 제목;");
@@ -34,13 +39,14 @@ public class ArticleDAOTest {
 
     @Test
     public void testRead() throws Exception {
-        logger.info(articleDAO.read(1).toString());
+        logger.info(articleDAO.read(4).toString());
+        //System.out.println(articleDAO.read(4));
     }
 
     @Test
     public void testUpdate() throws Exception {
         ArticleVO article = new ArticleVO();
-        article.setArticleNo(1);
+        article.setArticleNo(3);
         article.setTitle("글 수정 테스트 제목");
         article.setContent("글 수정 테스트 내용");
         articleDAO.update(article);
@@ -48,7 +54,7 @@ public class ArticleDAOTest {
 
     @Test
     public void testDelete() throws Exception {
-        articleDAO.delete(1);
+        articleDAO.delete(2);
     }
 
 }
