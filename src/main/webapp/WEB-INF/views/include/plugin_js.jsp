@@ -7,13 +7,6 @@
   Usage: js플러그인 태그 작
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-<!-- REQUIRED JS SCRIPTS -->
-
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"/>
 <!-- Bootstrap 3.3.7 -->
@@ -24,5 +17,3 @@
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
-</body>
-</html>

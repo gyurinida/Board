@@ -7,7 +7,6 @@
   Usage: meta 태그, css 태그 작성
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,8 +36,3 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-
-<body>
-
-</body>
-</html>

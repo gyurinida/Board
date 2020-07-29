@@ -7,12 +7,8 @@
   Usage: 페이지의 main header에 해당하는 부분
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-    <header class="main-header">
+
+<header class="main-header">
 
     <!-- Logo -->
     <a href="index2.html" class="logo">
@@ -180,5 +176,3 @@
         </div>
     </nav>
 </header>
-</body>
-</html>

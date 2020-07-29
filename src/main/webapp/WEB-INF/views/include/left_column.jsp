@@ -7,12 +7,8 @@
   Usage: 페이지의 left side column에 해당하는 부분
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-    <aside class="main-sidebar">
+
+<aside class="main-sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -63,5 +59,3 @@
     </section>
     <!-- /.sidebar -->
 </aside>
-</body>
-</html>
