@@ -19,4 +19,6 @@ public interface ArticleDAO {
     List<ArticleVO> listPaging(int page) throws Exception;
 
     List<ArticleVO> listCriteria(Criteria criteria) throws Exception;
+
+    int countArticles(Criteria criteria) throws Exception;
 }
