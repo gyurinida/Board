@@ -2,6 +2,7 @@ package Controller.article;
 
 import Controller.article.domain.ArticleVO;
 import Controller.article.persistence.ArticleDAO;
+import Controller.commons.paging.Criteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring-config/applicationContext.xml"})
@@ -20,6 +22,45 @@ public class ArticleDAOTest {
 
     @Inject
     private ArticleDAO articleDAO;
+
+    @Test
+    public void testListCriteria() throws Exception{
+        Criteria criteria = new Criteria();
+        criteria.setPage(3);
+        criteria.setPerPageNum(20);
+
+        List<ArticleVO> articles = articleDAO.listCriteria(criteria);
+
+        for(ArticleVO article: articles)
+            System.out.println(article.getArticleNo()+": "+article.getTitle());
+    }
+
+
+/*
+    @Test
+    public void testListPaging() throws Exception{
+        int page = 3;
+        List<ArticleVO> articles = articleDAO.listPaging(page);
+
+        for(ArticleVO article: articles)
+            System.out.println(article.getArticleNo()+": "+article.getTitle());
+            //logger.info(article.getArticleNo()+": "+article.getTitle());
+    }
+
+
+    @Test
+    public void testCreateHundred() throws Exception{
+        for(int i=1; i<=1000; i++){
+            ArticleVO articleVO = new ArticleVO();
+            articleVO.setArticleNo(i);
+            articleVO.setTitle(i+"th post..");
+            articleVO.setContent(i+"th content");
+            articleVO.setWriter("user0"+(i%10));
+            Date todaytime = new Date();
+            articleVO.setRegDate(todaytime);
+            articleDAO.create(articleVO);
+        }
+    }
 
     @Test
     public void testListAll() throws Exception{
@@ -56,5 +97,5 @@ public class ArticleDAOTest {
     public void testDelete() throws Exception {
         articleDAO.delete(2);
     }
-
+     */
 }

@@ -1,6 +1,7 @@
 package Controller.article.persistence;
 
 import Controller.article.domain.ArticleVO;
+import Controller.commons.paging.Criteria;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +44,19 @@ public class ArticleDAOImpl implements ArticleDAO {
         //System.out.println("ArticleDAOImpl.java");
         //System.out.println(sqlSession.selectList(NAMESPACE+".listAll"));
         return sqlSession.selectList(NAMESPACE+".listAll");
+    }
+
+    @Override
+    public List<ArticleVO> listPaging(int page) throws Exception {
+        if(page<=0)
+            page = 1;
+
+        page = (page-1)*10;
+        return sqlSession.selectList(NAMESPACE+".listPaging", page);
+    }
+
+    @Override
+    public List<ArticleVO> listCriteria(Criteria criteria) throws Exception {
+        return sqlSession.selectList(NAMESPACE+".listCriteria", criteria);
     }
 }
