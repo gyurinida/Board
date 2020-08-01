@@ -50,7 +50,7 @@ public class ArticleController {
     public String list(Model model) throws Exception{
         logger.info("list ... ");
         model.addAttribute("articles", articleService.listAll());
-        System.out.println(model.getAttribute("articles"));
+        //System.out.println(model.getAttribute("articles"));
         return "article/list";
     }
 
@@ -83,7 +83,7 @@ public class ArticleController {
     }
 
     // 삭제 처리
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public String remove(@RequestParam("articleNo") int articleNo, RedirectAttributes redirectAttributes) throws Exception{
         logger.info("remove...");
         articleService.delete(articleNo);

@@ -49,7 +49,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="/dist/img/user1-128≈128.jpg" alt="user image">
+                            <img class="img-circle img-bordered-sm" src="dist/img/user1-128x128.jpg" alt="user image">
                             <span class="username">
                                 <a href="#">${article.writer}</a>
                             </span>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="box-footer">
                         <form role="form" method="post">
-                            <input type="hidden" name="articleNo" valus="${article.articleNo}">
+                            <input type="hidden" name="articleNo" value="${article.articleNo}">
                         </form>
                         <button type="submit" class="btn btn-primary listBtn"><i class="fa fa-list"></i> 목록</button>
                         <div class="pull-right">
@@ -81,22 +81,24 @@
 
 <%@ include file="../include/plugin_js.jsp"%>
 <script>
-    $(document).ready(function(){
-       var formObj = ${"form[role='form']"};
-       console.log(formObj);
+    $(document).ready(function () {
+        var formObj = $("form[role='form']");
 
-       $(".modbtn").on("click", function(){
-           formObj.attr("action", "/article/modify");
-           formObj.attr("method", "get");
-           formObj.submit();
-       });
-       $(".delBtn").on("click", function () {
-            formObj.attr("action", "/article/remove");
+        $(".modBtn").on("click", function () {
+            formObj.attr("action", "modify");
+            formObj.attr("method", "get");
             formObj.submit();
-       });
-       $(".listBtn").on("click", function () {
-            self.location = "/article/list"
-       });
+        });
+
+        $(".delBtn").on("click", function () {
+            formObj.attr("action", "remove");
+            formObj.submit();
+        });
+
+        $(".listBtn").on("click", function () {
+            self.location = "list"
+        });
+
     });
 </script>
 </body>
