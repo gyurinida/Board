@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -24,6 +26,35 @@ public class ArticleDAOTest {
     private ArticleDAO articleDAO;
 
     @Test
+    public void testURI2() throws Exception {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .path("/{module}/{page}")
+                .queryParam("articleNo", 12)
+                .queryParam("perPageNum", 20)
+                .build()
+                .expand("article", "read")          // 각각 path의 module, page로 들어가는 듯
+                .encode();
+
+        System.out.println(uriComponents.toString());
+    }
+
+    /*
+    @Test
+    public void testURI() throws Exception{
+        // 스프링 MVC에서 제공하는 URI 작성에 도움주는 클래스
+        // UriComponents, UriComponentsBuilder
+        // UriComponents 클래스를 통해 path나 query에 해당하는 문자열을 추가해 원하는 URI 만들 수 있음
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .path("/article/read")
+                .queryParam("articleNo", 12)
+                .queryParam("perPageNum", 20)
+                .build();
+
+        System.out.println("/article/read?articleNo=12&perPageNum=20");
+        System.out.println(uriComponents.toString());
+    }
+
+    @Test
     public void testListCriteria() throws Exception{
         Criteria criteria = new Criteria();
         criteria.setPage(3);
@@ -35,8 +66,6 @@ public class ArticleDAOTest {
             System.out.println(article.getArticleNo()+": "+article.getTitle());
     }
 
-
-/*
     @Test
     public void testListPaging() throws Exception{
         int page = 3;

@@ -43,7 +43,10 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="${path}/article/write"><i class="fa fa-edit"></i> <span>게시글 작성</span></a></li>
             <li><a href="${path}/article/list"><i class="fa fa-list"></i> <span>게시글 목록</span></a></li>
-            <li class="treeview">
+            <li><a href="${path}/article/listCriteria"><i class="fa fa-list"></i> <span>게시글 목록(페이징 처리)</span></a></li>
+            <li><a href="${path}/article/listPaging"><i class="fa fa-list"></i> <span>게시글 목록(페이징, 페이지번호)</span></a></li>
+
+            <!--<li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
                     <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -53,7 +56,7 @@
                     <li><a href="#">Link in level 2</a></li>
                     <li><a href="#">Link in level 2</a></li>
                 </ul>
-            </li>
+            </li>-->
         </ul>
         <!-- /.sidebar-menu -->
     </section>

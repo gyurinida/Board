@@ -1,5 +1,8 @@
 package Controller.commons.paging;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class PageMaker {
     private int totalCount; // 게시글 전체 갯수
     private int startPage;  // 목록 하단의 시작 페이지 번호
@@ -27,6 +30,16 @@ public class PageMaker {
 
         prev = startPage==1?false:true;
         next = endPage*criteria.getPerPageNum()>=totalCount?false:true;
+    }
+
+    public String makeQuery(int page){
+        // URI 자동으로 생성
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("perPageNum", criteria.getPerPageNum())
+                .build();
+
+        return uriComponents.toUriString();
     }
 
     public int getTotalCount() {
