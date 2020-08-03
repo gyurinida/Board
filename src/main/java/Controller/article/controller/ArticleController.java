@@ -3,12 +3,10 @@ package Controller.article.controller;
 import Controller.article.domain.ArticleVO;
 import Controller.article.service.ArticleService;
 import Controller.commons.paging.Criteria;
-import Controller.commons.paging.PageMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,17 +29,17 @@ public class ArticleController {
     // 등록 페이지 이동
     @RequestMapping(value = "/write", method = RequestMethod.GET)
     public String writeGET(){
-        logger.info("write GET...");
-        return "/article/write";
+        logger.info("normal write GET...");
+        return "article/normal/write";
     }
 
     // 등록 처리
-    @RequestMapping(value = "write", method = RequestMethod.POST)
+    @RequestMapping(value = "/write", method = RequestMethod.POST)
     public String writePOST(ArticleVO articleVO, RedirectAttributes redirectAttributes) throws Exception{
         Date curtime = new Date();
         articleVO.setRegDate(curtime);
-        logger.info("write POST...");
-        logger.info(articleVO.toString());
+        logger.info("normal write POST...");
+
         articleService.create(articleVO);
         redirectAttributes.addFlashAttribute("msg", "regSuccess");
 
@@ -49,122 +47,59 @@ public class ArticleController {
     }
 
     // 목록 페이지 이동
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) throws Exception{
-        logger.info("list ... ");
+        logger.info("normal list ... ");
         model.addAttribute("articles", articleService.listAll());
         //System.out.println(model.getAttribute("articles"));
-        return "article/list";
+        return "article/normal/list";
+    }
+
+    // 페이징 처리
+    @RequestMapping(value = "/listCriteria", method = RequestMethod.GET)
+    public String listCriteria(Model model, Criteria criteria) throws Exception{
+        logger.info("normal listCriteria...");
+        model.addAttribute("articles", articleService.listCriteria(criteria));
+        return "article/normal/list_criteria";
     }
 
     // 조회 페이지 이동
     @RequestMapping(value = "/read", method = RequestMethod.GET)
     public String read(@RequestParam("articleNo") int articleNo, Model model) throws Exception{
-        logger.info("read...");
+        logger.info("normal read...");
         model.addAttribute("article", articleService.read(articleNo));
 
-        return "/article/read";
-    }
-
-    // [08-2] 조회 페이지 이동 + 목록페이지 정보 유지
-    @RequestMapping(value = "/readPaging", method = RequestMethod.GET)
-    public String readPaging(@RequestParam("articleNo") int articleNo,
-                             @ModelAttribute("criteria") Criteria criteria,
-                             Model model) throws  Exception{
-        model.addAttribute("article", articleService.read(articleNo));
-
-        return "/article/read_paging";
+        return "article/normal/read";
     }
 
     // 수정 페이지 이동
     @RequestMapping(value = "/modify", method = RequestMethod.GET)
     public String modifyGET(@RequestParam("articleNo") int articleNo, Model model) throws Exception{
-        logger.info("modifyGet..");
+        logger.info("normal modifyGet..");
         model.addAttribute("article", articleService.read(articleNo));
 
-        return "/article/modify";
-    }
-
-    // [08-2] 수정 페이지 이동 + 목록페이지 정보 유지
-    @RequestMapping(value = "/modifyPaging", method = RequestMethod.GET)
-    public String modifyPagingGET(@RequestParam("articleNo") int articleNo,
-                                  @ModelAttribute("criteria") Criteria criteria,
-                                  Model model) throws Exception{
-        logger.info("modifyPagingGet..");
-        model.addAttribute("article", articleService.read(articleNo));
-
-        return "/article/modify_paging";
+        return "article/normal/modify";
     }
 
     // 수정 처리
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
     public String modifyPOST(ArticleVO articleVO,
                              RedirectAttributes redirectAttributes) throws Exception{
-        logger.info("modifyPOST...");
+        logger.info("normal modifyPOST...");
         articleService.update(articleVO);
         redirectAttributes.addFlashAttribute("msg", "modSuccess");
 
         return "redirect:/article/list";
-    }
-
-    // [08-2] 수정 처리 + 목록페이지 정보 유지
-    @RequestMapping(value = "/modifyPaging", method = RequestMethod.POST)
-    public String modifyPagingPOST(ArticleVO articleVO,
-                                   Criteria criteria,
-                                   RedirectAttributes redirectAttributes) throws Exception{
-        logger.info("modifyPagingPOST...");
-        articleService.update(articleVO);
-        redirectAttributes.addAttribute("page", criteria.getPage());
-        redirectAttributes.addAttribute("perPageNum", criteria.getPerPageNum());
-        redirectAttributes.addFlashAttribute("msg", "modSuccess");
-
-        return "redirect:/article/listPaging";
     }
 
     // 삭제 처리
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public String remove(@RequestParam("articleNo") int articleNo, RedirectAttributes redirectAttributes) throws Exception{
-        logger.info("remove...");
+        logger.info("normal remove...");
         articleService.delete(articleNo);
         redirectAttributes.addFlashAttribute("msg", "delSuccess");
 
         return "redirect:/article/list";
     }
 
-    // [08-2] 삭제 처리 + 목록페이지 정보 유지
-    @RequestMapping(value = "/removePaging", method = RequestMethod.POST)
-    public String removePaging(@RequestParam("articleNo") int articleNo,
-                               Criteria criteria,
-                               RedirectAttributes redirectAttributes) throws Exception{
-        logger.info("remove...");
-        articleService.delete(articleNo);
-        redirectAttributes.addAttribute("page", criteria.getPage());
-        redirectAttributes.addAttribute("perPageNum", criteria.getPerPageNum());
-        redirectAttributes.addFlashAttribute("msg", "delSuccess");
-
-        return "redirect:/article/listPaging";
-    }
-
-    // 페이징 처리
-    @RequestMapping(value = "/listCriteria", method = RequestMethod.GET)
-    public String listCriteria(Model model, Criteria criteria) throws Exception{
-        logger.info("listCriteria...");
-        model.addAttribute("articles", articleService.listCriteria(criteria));
-        return "/article/list_criteria";
-    }
-
-    // 목록 하단 페이지 처리
-    @RequestMapping(value = "/listPaging", method = RequestMethod.GET)
-    public String listPaging(Model model, Criteria criteria) throws Exception{
-        logger.info("listPaging...");
-
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCriteria(criteria);
-        pageMaker.setTotalCount(articleService.countArticles(criteria));
-
-        model.addAttribute("articles", articleService.listCriteria(criteria));
-        model.addAttribute("pageMaker", pageMaker);
-
-        return "/article/list_paging";
-    }
 }

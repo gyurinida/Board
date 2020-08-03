@@ -9,15 +9,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
-<%@ include file="../include/head.jsp"%>
+<%@ include file="../../include/head.jsp"%>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini layout-boxed">
 <div class="wrapper">
 
     <!-- Main Header -->
-    <%@ include file="../include/main_header.jsp"%>
+    <%@ include file="../../include/main_header.jsp"%>
     <!-- Left side column. contains the logo and sidebar -->
-    <%@ include file="../include/left_column.jsp"%>
+    <%@ include file="../../include/left_column.jsp"%>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -68,7 +68,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-success btn-flat" id="wrtieBtn">
+                            <button type="button" class="btn btn-success btn-flat" id="writeBtn">
                                 <i class="fa fa-pencil"></i> 글쓰기
                             </button>
                         </div>
@@ -81,22 +81,16 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <%@ include file="../include/main_footer.jsp"%>
+    <%@ include file="../../include/main_footer.jsp"%>
 
 </div>
 <!-- ./wrapper -->
 
-<%@ include file="../include/plugin_js.jsp"%>
+<%@ include file="../../include/plugin_js.jsp"%>
 <script>
-    var result = "${msg}";
-    if(result == "regSuccess"){
-        alert("게시글 등록 성공");
-    }else if(result == "modSuccess"){
-        alert("게시글 수정 성공");
-    }else if(result == "delSucces"){
-        alert("게시글 삭제 성공");
-    }
+    $(".writeBtn").on("click", function () {
+        self.location = "write"
+    });
 </script>
-
 </body>
 </html>

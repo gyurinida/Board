@@ -9,27 +9,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
-<%@ include file="../include/head.jsp"%>
+<%@ include file="../../include/head.jsp"%>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini layout-boxed">
 <div class="wrapper">
 
     <!-- Main Header -->
-    <%@ include file="../include/main_header.jsp"%>
+    <%@ include file="../../include/main_header.jsp"%>
     <!-- Left side column. contains the logo and sidebar -->
-    <%@ include file="../include/left_column.jsp"%>
+    <%@ include file="../../include/left_column.jsp"%>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                게시판
+                <small>목록페이지(페이징)</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><i class="fa fa-edit"></i> article</li>
+                <li class="active"><a href="${path}/article/paging/list"> list</a></li>
             </ol>
         </section>
 
@@ -60,7 +60,7 @@
                                     <%-- <td><a href="${path}/article/read?articleNo=${article.articleNo}">${article.title}</a></td> --%>
                                     <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
                                     <td>
-                                        <a href="${path}/article/readPaging${pageMaker.makeQuery(pageMaker.criteria.page)}&articleNo=${article.articleNo}">
+                                        <a href="${path}/article/paging/read${pageMaker.makeQuery(pageMaker.criteria.page)}&articleNo=${article.articleNo}">
                                             ${article.title}
                                         </a>
                                     </td>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-success btn-flat" id="wrtieBtn">
+                            <button type="button" class="btn btn-success btn-flat" id="writeBtn">
                                 <i class="fa fa-pencil"></i> 글쓰기
                             </button>
                         </div>
@@ -87,10 +87,10 @@
                             </form>
                             <ul class="pagination">
                                 <c:if test="${pageMaker.prev}">
-                                    <%-- <li><a href="${path}/article/listPaging?page=${pageMaker.startPage-1}">이전</a> </li> --%>
+                                    <%-- <li><a href="${path}/article/list?page=${pageMaker.startPage-1}">이전</a> </li> --%>
                                     <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
                                     <!--<li>
-                                        <a href="${path}/article/listPaging${pageMaker.makeQuery(pageMaker.startPage-1)}">
+                                        <a href="${path}/article/list${pageMaker.makeQuery(pageMaker.startPage-1)}">
                                             이전
                                         </a>
                                     </li>-->
@@ -99,19 +99,19 @@
                                 </c:if>
                                 <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
                                     <li <c:out value="${pageMaker.criteria.page==idx?'class=active':''}"/> >
-                                        <%-- <a href="${path}/article/listPaging?page=${idx}">${idx}</a> --%>
+                                        <%-- <a href="${path}/article/list?page=${idx}">${idx}</a> --%>
                                         <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
-                                        <!-- <a href="${path}/article/listPaging${pageMaker.makeQuery(idx)}">${idx}</a>-->
+                                        <!-- <a href="${path}/article/list${pageMaker.makeQuery(idx)}">${idx}</a>-->
                                         <%-- [08] javascript를 이용한 페이징 처리 개선--%>
                                         <a href="${idx}">${idx}</a>
                                     </li>
                                 </c:forEach>
                                 <c:if test="${pageMaker.next && pageMaker.endPage>0}">
-                                    <%-- <li><a href="${path}/article/listPaging?page=${pageMaker.endPage+1}">다음</a> </li> --%>
+                                    <%-- <li><a href="${path}/article/list?page=${pageMaker.endPage+1}">다음</a> </li> --%>
                                     <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
                                     <!--
                                     <li>
-                                        <a href="${path}/article/listPaging?${pageMaker.makeQuery(pageMaker.endPage+1)}">
+                                        <a href="${path}/article/list?${pageMaker.makeQuery(pageMaker.endPage+1)}">
                                             다음
                                         </a>
                                     </li>
@@ -130,11 +130,11 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <%@ include file="../include/main_footer.jsp"%>
+    <%@ include file="../../include/main_footer.jsp"%>
 
 </div>
 
-<%@ include file="../include/plugin_js.jsp"%>
+<%@ include file="../../include/plugin_js.jsp"%>
 
 <script>
     $(".pagination li a").on("click", function (event) {
@@ -144,8 +144,12 @@
         var listPageForm = $("#listPageForm");
         listPageForm.find("[name='page']").val(targetPage);
         console.log(targetPage);
-        listPageForm.attr("action", "listPaging").attr("method", "get");
+        listPageForm.attr("action", "list").attr("method", "get");
         listPageForm.submit();
+    });
+
+    $("#writeBtn").on("click", function () {
+        self.location = "write";
     });
 </script>
 
