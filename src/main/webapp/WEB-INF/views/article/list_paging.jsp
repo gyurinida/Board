@@ -60,7 +60,7 @@
                                     <%-- <td><a href="${path}/article/read?articleNo=${article.articleNo}">${article.title}</a></td> --%>
                                     <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
                                     <td>
-                                        <a href="${path}/article/read${pageMaker.makeQuery(pageMaker.criteria.page)}&articleNo=${article.articleNo}">
+                                        <a href="${path}/article/readPaging${pageMaker.makeQuery(pageMaker.criteria.page)}&articleNo=${article.articleNo}">
                                             ${article.title}
                                         </a>
                                     </td>
