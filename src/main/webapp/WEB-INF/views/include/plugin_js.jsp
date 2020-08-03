@@ -6,14 +6,10 @@
   To change this template use File | Settings | File Templates.
   Usage: js플러그인 태그 작업
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
-<!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"/>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"/>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"/>
-
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. -->
+<%-- cf. script 시작태그에서 /로 닫아버리면 인식이 안되니까 꼭 닫는태그로 사용하기 --%>
+<%-- jQuery 3 --%>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<%-- Bootstrap 3.3.7 --%>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<%-- AdminLTE App --%>
+<script src="dist/js/adminlte.min.js"></script>

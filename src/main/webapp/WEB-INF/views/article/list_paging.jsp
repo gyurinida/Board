@@ -81,31 +81,43 @@
                     </div>
                     <div class="box-footer">
                         <div class="text-center">
+                            <form id="listPageForm">
+                                <input type="hidden" name="page" value="${pageMaker.criteria.page}">
+                                <input type="hidden" name="perPageNum" value="${pageMaker.criteria.perPageNum}">
+                            </form>
                             <ul class="pagination">
                                 <c:if test="${pageMaker.prev}">
                                     <%-- <li><a href="${path}/article/listPaging?page=${pageMaker.startPage-1}">이전</a> </li> --%>
                                     <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
-                                    <li>
+                                    <!--<li>
                                         <a href="${path}/article/listPaging${pageMaker.makeQuery(pageMaker.startPage-1)}">
                                             이전
                                         </a>
-                                    </li>
+                                    </li>-->
+                                    <%-- [08] javascript를 이용한 페이징 처리 개선--%>
+                                    <li><a href="${pageMaker.startPage-1}">이전</a></li>
                                 </c:if>
                                 <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
                                     <li <c:out value="${pageMaker.criteria.page==idx?'class=active':''}"/> >
                                         <%-- <a href="${path}/article/listPaging?page=${idx}">${idx}</a> --%>
                                         <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
-                                        <a href="${path}/article/listPaging${pageMaker.makeQuery(idx)}">${idx}</a>
+                                        <!-- <a href="${path}/article/listPaging${pageMaker.makeQuery(idx)}">${idx}</a>-->
+                                        <%-- [08] javascript를 이용한 페이징 처리 개선--%>
+                                        <a href="${idx}">${idx}</a>
                                     </li>
                                 </c:forEach>
                                 <c:if test="${pageMaker.next && pageMaker.endPage>0}">
                                     <%-- <li><a href="${path}/article/listPaging?page=${pageMaker.endPage+1}">다음</a> </li> --%>
                                     <%-- [08] UriComponentsBuilder를 이용한 페이징 처리 개선--%>
+                                    <!--
                                     <li>
                                         <a href="${path}/article/listPaging?${pageMaker.makeQuery(pageMaker.endPage+1)}">
                                             다음
                                         </a>
                                     </li>
+                                    -->
+                                    <%-- [08] javascript를 이용한 페이징 처리 개선--%>
+                                    <li><a href="${pageMaker.endPage+1}">다음</a> </li>
                                 </c:if>
                             </ul>
                         </div>
@@ -121,18 +133,20 @@
     <%@ include file="../include/main_footer.jsp"%>
 
 </div>
-<!-- ./wrapper -->
 
 <%@ include file="../include/plugin_js.jsp"%>
+
 <script>
-    var result = "${msg}";
-    if(result == "regSuccess"){
-        alert("게시글 등록 성공");
-    }else if(result == "modSuccess"){
-        alert("게시글 수정 성공");
-    }else if(result == "delSucces"){
-        alert("게시글 삭제 성공");
-    }
+    $(".pagination li a").on("click", function (event) {
+        event.preventDefault();
+
+        var targetPage = $(this).attr("href");
+        var listPageForm = $("#listPageForm");
+        listPageForm.find("[name='page']").val(targetPage);
+        console.log(targetPage);
+        listPageForm.attr("action", "listPaging").attr("method", "get");
+        listPageForm.submit();
+    });
 </script>
 
 </body>
