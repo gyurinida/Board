@@ -63,7 +63,6 @@
                     <li><a href="${path}/article/paging/list">게시글 목록</a></li>
                 </ul>
             </li>
-            <!--
             <li class="treeview">
                 <a href="#"><i class="fa fa-edit"></i> <span>게시판(페이징+검색)</span>
                     <span class="pull-right-container">
@@ -75,7 +74,7 @@
                     <li><a href="${path}/article/paging/search/list">게시글 목록</a></li>
                 </ul>
             </li>
-            -->
+
         </ul>
         <!-- /.sidebar-menu -->
     </section>

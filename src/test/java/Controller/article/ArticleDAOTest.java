@@ -2,7 +2,9 @@ package Controller.article;
 
 import Controller.article.domain.ArticleVO;
 import Controller.article.persistence.ArticleDAO;
+import Controller.article.service.ArticleService;
 import Controller.commons.paging.Criteria;
+import Controller.commons.paging.SearchCriteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,6 +28,24 @@ public class ArticleDAOTest {
     private ArticleDAO articleDAO;
 
     @Test
+    public void testDynamic1() throws Exception{
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.setPage(1);;
+        searchCriteria.setKeyword("낙원");
+        searchCriteria.setSearchType("t");
+
+        System.out.println("==================");
+
+        List<ArticleVO> articles = articleDAO.listSearch(searchCriteria);
+        for(ArticleVO article : articles){
+            System.out.println(article.getArticleNo()+": "+article.getTitle());;
+        }
+
+        System.out.println("==================");
+        System.out.println("searched articles count: "+articleDAO.countSearchArticles(searchCriteria));
+    }
+    /*
+    @Test
     public void testURI2() throws Exception {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .path("/{module}/{page}")
@@ -38,7 +58,7 @@ public class ArticleDAOTest {
         System.out.println(uriComponents.toString());
     }
 
-    /*
+
     @Test
     public void testURI() throws Exception{
         // 스프링 MVC에서 제공하는 URI 작성에 도움주는 클래스

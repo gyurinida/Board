@@ -21,6 +21,9 @@
     <mvc:resources mapping="/article/paging/bower_components/**" location="/resources/bower_components/"/>
     <mvc:resources mapping="/article/paging/plugins/**" location="/resources/plugins/"/>
     <mvc:resources mapping="/article/paging/dist/**" location="/resources/dist/"/>
+    <mvc:resources mapping="/article/paging/search/bower_components/**" location="/resources/bower_components/"/>
+    <mvc:resources mapping="/article/paging/search/plugins/**" location="/resources/plugins/"/>
+    <mvc:resources mapping="/article/paging/search/dist/**" location="/resources/dist/"/>
 
     <!-- viewResolver 설정 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
