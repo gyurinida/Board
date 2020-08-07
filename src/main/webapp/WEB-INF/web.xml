@@ -45,6 +45,17 @@
         <filter-name>encoding</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <!-- [11] GET/POST만 지원하는 브라우저에서 REST방식을 사용할 수 있게 함
+            <form>태그 안에 <input type="hidden" name="_method" value="PUT">
+            의 형식으로 사용하면 됨 -->
+    <filter>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <absolute-ordering />
 </web-app>
