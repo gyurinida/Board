@@ -261,8 +261,8 @@
 
         // 페이지 번호 버튼
         for(var i = pageMaker.startPage, len=pageMaker.endPage; i<=len; i++){
-            var strCalss = pageMaker.criteria.page==i?'class=active':'';
-            str += "<li "+strCalss+"><a href='"+i+"'>"+i+"</a></li>";
+            var strClass = pageMaker.criteria.page==i?'class=active':'';
+            str += "<li "+strClass+"><a href='"+i+"'>"+i+"</a></li>";
         }
 
         // 다음 버튼

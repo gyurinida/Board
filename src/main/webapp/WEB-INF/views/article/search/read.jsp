@@ -70,6 +70,96 @@
                             <button type="submit" class="btn btn-danger delBtn"><i class="fa fa-trash"></i> 삭제</button>
                         </div>
                     </div>
+                    <!-- [12-2] 댓글 입력 -->
+                    <div class="box-warning">
+                        <div class="box-header with-border">
+                            <a class="link-black text-lg"><i class="fa fa-pencil"></i> 댓글작성</a>
+                        </div>
+                        <div class="box-body">
+                            <form class="form-horizontal">
+                                <div class="form-group margin">
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" id="newReplyText" rows="3" placeholder="댓글 내용.." style="resize: none"></textarea>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input class="form-control" id="newReplyWriter" type="text" placeholder="댓글 작성자..">
+                                    </div>
+                                    <hr/>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-primary btn-block replyAddBtn"><i class="fa fa-save"></i> 저장</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- [12-2] 댓글 목록/페이징 -->
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <%--댓글 유무 / 댓글 갯수 / 댓글 펼치기,접기--%>
+                            <a href="" class="link-black text-lg"><i class="fa fa-comments-o margin-r-5 replyCount"></i> </a>
+                            <div class="box-tools">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <%--댓글 목록--%>
+                        <div class="box-body repliesDiv">
+
+                        </div>
+                        <%--댓글 페이징--%>
+                        <div class="box-footer">
+                            <div class="text-center">
+                                <ul class="pagination pagination-sm no-margin">
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [12-2] 댓글 수정 modal -->
+                    <div class="modal fade" id="modModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="model-header">
+                                    <button type="button" class="close" date-dimiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">댓글 수정</h4>
+                                </div>
+                                <div class="modal-body" data-rno>
+                                    <input type="hidden" class="replyNo" />
+                                    <%-- <input type="text" id="replytext" class="form-control" /> --%>
+                                    <textarea class="form-control" id="replyText" rows="3" style="resize: none"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default pull-left exitModBtn" date-dimiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary modalModBtn">수정</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [12-2] 댓글 삭제 modal -->
+                    <div class="modal fade" id="delModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" date-dimiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">댓글 삭제</h4>
+                                    <input type="hidden" class="rno" />
+                                </div>
+                                <div class="modal-body" data-rno>
+                                    <p>댓글을 삭제하겠습니까?</p>
+                                    <input type="hidden" class="rno" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default pull-left exitDelBtn" date-dimiss="modal">아니요</button>
+                                    <button type="button" class="btn btn-primary modalDelBtn">네. 삭제!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -84,8 +174,238 @@
 <!-- ./wrapper -->
 
 <%@ include file="../../include/plugin_js.jsp"%>
+<script id="replyTemplate" type="text/x-handlebars-template">
+    {{#each.}}
+    <div class="post replyDiv" data-replyNo={{replyNo}}>
+        <div class="user-block">
+            <img class="img-circle img-bordered-sm" src="/freeboard01_war_exploded/dist/img/user1-128x128.jpg" alt="user image">
+            <span class="username">
+                <a href="#">{{replyWriter}}</a>
+                <a href="#" class="pull-right btn-box-tool replyDelBtn" data-toggle="modal" data-target="#delModal">
+                    <i class="fa fa-times"> 삭제</i>
+                </a>
+                <a href="#" class="pull-right btn-box-tool replyModBtn" data-toggle="modal" data-target="#modModal">
+                    <i class="fa fa-edits"> 수정</i>
+                </a>
+            </span>
+            <span class="description">{{prettifyDate regDate}}</span>
+        </div>
+        <div class="oldReplyText">{{{escape replyText}}}</div>
+        <br/>
+    </div>
+    {{/each}}
+</script>
 <script>
     $(document).ready(function () {
+
+        <%-- [11-2] 댓글 목록 --%>
+        var articleNo = "${article.articleNo}"; // 현재 게시글 번호
+        var replyPageNum = 1;                   // 댓글 페이지 번호 초기화
+
+        // 댓글 내용: 줄바꿈/공백
+        Handlebars.registerHelper("escape", function (replyText) {
+            var text = Handlebars.Utils.escapeExpression(replyText);
+            text = text.replace(/(\r\n|\n|\r)/gm, "<br/>");
+            text = text.replace(/( )/gm, "&nbsp;");
+            return new Handlebars.SafeString(text);
+        });
+
+        // 댓글 등록일자: 날짜/시간 2자기 맞추기
+        Handlebars.registerHelper("prettifyDate", function (timeValue) {
+            var dateObj = new Date(timeValue);
+            var year = dateObj.getFullYear();
+            var month = dateObj.getMonth()+1;
+            var date = dateObj.getDate();
+            var hours = dateObj.getHours();
+            var minutes = dateObj.getMinutes();
+
+            // 두자리로 변환
+            month<10?month='0'+month:month;
+            date<10?date='0'+date:date;
+            hours<10?hours='0'+hours:hours;
+            minutes<10?minutes='0'+minutes:minutes;
+
+            return year+"-"+month+"-"+date+"-"+hours+"-"+minutes;
+        });
+
+        // 댓글 목록 함수 호출
+        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
+
+        // 댓글 목록 함수
+        function getReplies(repliesUri) {
+            $.getJSON(repliesUri, function (data) {
+                printReplyCount(data.pageMaker.totalCount);
+                printReplies(data.replies, $(".repliesDiv"), $("#replyTemplate"));
+                printReplyPaging(data.pageMaker, $(".pagination"));
+            });
+        }
+
+        // 댓글 갯수 출력 함수
+        function printReplyCount(totalCount) {
+            var replyCount = $(".replyCount");
+            var collapsedBox = $(".collapsed-box");
+
+            // 댓글 없음
+            if(totalCount==0){
+                replyCount.html("댓글이 없습니다. 의견을 남겨주세요");
+                collapsedBox.find(".btn-box-tool").remove();
+                return;
+            }
+
+            // 댓글 존재
+            replyCount.html(" 댓글 목록 ("+totalCount+")");
+            collapsedBox.find(".box-tools").html(
+                "<button type='button' class='btn btn-box-tool' data-widget='collapse'>"
+                + "<i class='fa fa-plus'></i>"
+                + "</button>"
+            );
+        }
+
+        // 댓글 목록 출력 함수
+        function printReplies(replyArr, targetArea, templateObj) {
+            var replyTemplate = Handlebars.compile(templateObj.html());
+            var html = replyTemplate(replyArr);
+            $(".replyDiv").remove();
+            targetArea.html(html);
+        }
+
+        // 댓글 페이징 출력
+        function printReplyPaging(pageMaker, targetArea) {
+            var str = "";
+
+            // 이전 버튼
+            if(pageMaker.prev){
+                str += "<li><a href='"+(pageMaker.startPage-1)+"'>이전</a></li>";
+            }
+
+            // 페이지 번호 버튼
+            for(var i = pageMaker.startPage, len=pageMaker.endPage; i<=len; i++){
+                var strClass = pageMaker.criteria.page==i?'class=active':'';
+                str += "<li "+strClass+"><a href='"+i+"'>"+i+"</a></li>";
+            }
+
+            // 다음 버튼
+            if(pageMaker.next){
+                str += "<li><a href='"+(pageMaker.endPage+1)+"'>다음</a></li>";
+            }
+
+            targetArea.html(str);
+        }
+
+        // 댓글 페이지 번호 클릭 이벤트
+        $(".pagination").on("click", "li a", function (event) {
+            event.preventDefault();
+            replyPageNum = $(this).attr("href");
+            getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
+        })
+
+        <%-- [11-2] 댓글 등록 --%>
+        // 댓글 저장 버튼 클릭 이벤트
+        $(".replyAddBtn").on("click", function () {
+            var replyWriterObj = $("#newReplyWriter");
+            var replyTextObj = $("#newReplyText");
+            var replyWriter = replyTextObj.val();
+            var replyText = replyTextObj.val();
+
+            // POST
+            $.ajax({
+                type: "post",
+                url: "/freeboard01_war_exploded/replies/",
+                headers: {
+                    "Content-type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                dataType: "text",
+                data: JSON.stringify({
+                    articleNo: articleNo,
+                    replyText: replyText,
+                    replyWriter: replyWriter
+                }),
+                success: function(result){
+                    console.log("result: " +result);
+                    if(result=="regSuccess"){
+                        alert("댓글이 등록되었습니다.");
+                        replyPageNum = 1;
+                        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
+
+                        replyTextObj.val("");   // 댓글 내용 초기화
+                        replyWriterObj.val(""); // 댓글 작성자 초기화
+                    }
+                }
+            });
+        })
+
+        <%-- [11-2] 댓글 수정/삭제 --%>
+        // 댓글 수정 위해 modal창에 값 불러오기
+        $(".repliesDiv").on("click", ".replyDiv", function (event) {
+            var reply = $(this);
+            $(".replyNo").val(reply.attr("data-replyNo"));
+            $("#replyText").val(reply.find(".oldReplyText").text());
+        });
+
+        // modal -> 댓글 수정 버튼 클릭 이벤트
+        $(".modalModBtn").on("click", function () {
+
+            var replyNo = $(".replyNo").val();
+            var replyText = $("#replyText").val();
+
+            // PUT
+            $.ajax({
+                type: "put",
+                url: "/freeboard01_war_exploded/replies/" + replyNo,
+                headers: {
+                    "Content-type": "application/json",
+                    "X-HTTP-Method-Override": "PUT"
+                },
+                data: JSON.stringify({
+                    replyText: replyText
+                }),
+                dataType: "text",
+                success: function(result){
+                    console.log("result: "+ result);
+                    if(result=="modSuccess"){
+                        alert("댓글이 수정되었습니다.");
+                        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum); // 댓글 목록 갱신
+                        $("#modModal").modal("hide"); // Modal 닫기
+                    }
+                }
+            });
+        });
+
+        $(".exitModBtn").on("click", function () {
+            $("#modModal").modal("hide");
+        })
+
+        // modal -> 댓글 삭제 버튼 클릭 이벤트
+        $(".modalDelBtn").on("click", function () {
+
+            var replyNo = $(".replyNo").val();
+
+            // DELETE
+            $.ajax({
+                type: "delete",
+                url: "/freeboard01_war_exploded/replies/" + replyNo,
+                headers: {
+                    "Content-type": "application/json",
+                    "X-HTTP-Method-Override": "DELETE"
+                },
+                dataType: "text",
+                success: function(result){
+                    console.log("result: "+ result);
+                    if(result=="delSuccess"){
+                        alert("댓글이 삭제되었습니다.");
+                        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum); // 댓글 목록 갱신
+                        $("#delModal").modal("hide"); // Modal 닫기
+                    }
+                }
+            });
+        });
+
+        $(".exitDelBtn").on("click", function () {
+            $("#delModal").modal("hide");
+        })
+
+        <%--  게시글 수정, 삭제, 목록 버튼 --%>
         var formObj = $("form[role='form']");
 
         $(".modBtn").on("click", function () {
