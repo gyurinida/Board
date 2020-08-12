@@ -12,6 +12,10 @@ public class ArticleVO {
     private int viewCnt;
     private int replyCnt;   // [14]
 
+    // [15-3]
+    private String[] files;
+    private int fileCnt;
+
     public Integer getArticleNo() {
         return articleNo;
     }
@@ -68,6 +72,23 @@ public class ArticleVO {
         this.replyCnt = replyCnt;
     }
 
+
+    public String[] getFiles() {
+        return files;
+    }
+
+    public void setFiles(String[] files) {
+        this.files = files;
+    }
+
+    public int getFileCnt() {
+        return fileCnt;
+    }
+
+    public void setFileCnt(int fileCnt) {
+        this.fileCnt = fileCnt;
+    }
+
     @Override
     public String toString() {
         return "ArticleVO{" +
@@ -78,6 +99,8 @@ public class ArticleVO {
                 ", regDate=" + regDate +
                 ", viewCnt=" + viewCnt +
                 ", replyCnt=" + replyCnt +
+                ", files=" + Arrays.toString(files) +
+                ", fileCnt=" + fileCnt +
                 '}';
     }
 }

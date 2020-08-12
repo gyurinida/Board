@@ -1,0 +1,27 @@
+package Controller.commons.util;
+
+import org.springframework.http.MediaType;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MediaUtils {
+    private static Map<String, MediaType> mediaTypeMap;
+
+    static {    // 클래스 초기화 블럭
+        mediaTypeMap = new HashMap<>();
+        mediaTypeMap.put("JPG", MediaType.IMAGE_JPEG);
+        mediaTypeMap.put("GIF", MediaType.IMAGE_GIF);
+        mediaTypeMap.put("PNG", MediaType.IMAGE_PNG);
+    }
+
+    static MediaType getMediaType(String fileName){
+        String formatName = getFormatName(fileName);
+        return mediaTypeMap.get(formatName);
+    }
+
+     static String getFormatName(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase();
+    }
+
+}
