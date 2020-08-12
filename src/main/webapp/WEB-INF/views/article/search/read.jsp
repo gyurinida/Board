@@ -343,6 +343,11 @@
             $("#replyText").val(reply.find(".oldReplyText").text());
         });
 
+        // modal창 x로 닫기 이벤트
+        $(".close").on("click", function () {
+            $(".modal").modal("hide");
+        })
+
         // modal -> 댓글 수정 버튼 클릭 이벤트
         $(".modalModBtn").on("click", function () {
 
