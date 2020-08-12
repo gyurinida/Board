@@ -13,25 +13,25 @@
     </appender>
 
     <!-- Application Loggers -->
-    <logger name="com.doubles.mvcboard">
-        <level value="info" />
+    <logger name="Controller">
+        <level value="INFO" />
     </logger>
 
     <!-- 3rdparty Loggers -->
     <logger name="org.springframework.core">
-        <level value="info"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.springframework.beans">
-        <level value="info"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="info"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="info"/>
+        <level value="INFO"/>
     </logger>
 
     <!-- Root Logger -->
