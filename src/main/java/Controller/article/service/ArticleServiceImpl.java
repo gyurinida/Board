@@ -5,6 +5,7 @@ import Controller.article.persistence.ArticleDAO;
 import Controller.commons.paging.Criteria;
 import Controller.commons.paging.SearchCriteria;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -23,8 +24,10 @@ public class ArticleServiceImpl implements ArticleService{
         articleDAO.create(articleVO);
     }
 
+    @Transactional  //[14-3]
     @Override
     public ArticleVO read(Integer articleNo) throws Exception {
+        articleDAO.updateViewCnt(articleNo);
         return articleDAO.read(articleNo);
     }
 

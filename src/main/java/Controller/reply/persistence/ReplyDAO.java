@@ -13,4 +13,6 @@ public interface ReplyDAO {
     // [11-3] 댓글 페이징
     List<ReplyVO> listPaging(Integer articleNo, Criteria criteria) throws Exception;
     int countReplies(Integer articleNo) throws Exception;
+
+    int getArticleNo(Integer replyNo) throws Exception; // [14]
 }

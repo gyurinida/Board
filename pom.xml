@@ -41,6 +41,11 @@
             <artifactId>spring-aop</artifactId>
             <version>5.2.7.RELEASE</version>
         </dependency>
+        <dependency>    <!-- [14] 트랜잭션 -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>5.2.7.RELEASE</version>
+        </dependency>
 
         <!-- MySQL -->
         <dependency>
