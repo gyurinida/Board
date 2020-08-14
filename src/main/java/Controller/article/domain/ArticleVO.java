@@ -79,6 +79,7 @@ public class ArticleVO {
 
     public void setFiles(String[] files) {
         this.files = files;
+        setFileCnt(files.length);
     }
 
     public int getFileCnt() {

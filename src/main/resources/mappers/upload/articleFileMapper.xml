@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Controller.mappers.upload.ArticleFileMapper">
+    <insert id="addFile">
+        INSERT INTO tbl_article_file(
+            file_name
+            , article_no
+        ) VALUES (
+            #{fileName}
+            , LAST_INSERT_ID()
+        )
+    </insert>
+
+    <select id="getArticleFiles" resultType="string">
+        SELECT file_name
+        FROM tbl_article_file
+        WHERE article_no = #{articleNo}
+        ORDER BY reg_date
+    </select>
+
+    <delete id="deleteFiles">
+        DELETE FROM tbl_article_file
+        WHERE article_no = #{articleNo}
+    </delete>
+</mapper>

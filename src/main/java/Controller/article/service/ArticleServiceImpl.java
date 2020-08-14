@@ -4,6 +4,7 @@ import Controller.article.domain.ArticleVO;
 import Controller.article.persistence.ArticleDAO;
 import Controller.commons.paging.Criteria;
 import Controller.commons.paging.SearchCriteria;
+import Controller.upload.persistence.ArticleFileDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +14,27 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService{
     private final ArticleDAO articleDAO;
+    private final ArticleFileDAO articleFileDAO;
 
     @Inject
-    public ArticleServiceImpl(ArticleDAO articleDAO){
+    public ArticleServiceImpl(ArticleDAO articleDAO, ArticleFileDAO articleFileDAO){
         this.articleDAO = articleDAO;
+        this.articleFileDAO = articleFileDAO;
     }
 
+    @Transactional
     @Override
     public void create(ArticleVO articleVO) throws Exception {
+        System.out.println(articleVO);
         articleDAO.create(articleVO);
+
+        // [15-5]
+        String[] files = articleVO.getFiles();
+        if(files==null)
+            return;
+
+        for(String fileName: files)
+            articleFileDAO.addFile(fileName);
     }
 
     @Transactional  //[14-3]
@@ -36,8 +49,10 @@ public class ArticleServiceImpl implements ArticleService{
         articleDAO.update(articleVO);
     }
 
+    @Transactional
     @Override
     public void delete(Integer articleNo) throws Exception {
+        articleFileDAO.deleteFiles(articleNo);
         articleDAO.delete(articleNo);
     }
 

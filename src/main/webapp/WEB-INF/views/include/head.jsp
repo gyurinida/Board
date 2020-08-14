@@ -40,4 +40,7 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <!-- [15-5] lightbox css -->
+    <link rel="stylesheet" href="bower_components/lightbox/css/lightbox.css">
 </head>

@@ -46,12 +46,12 @@ public class UploadFileUtils {
     }
 
     // 기본 경로 추출
-    private static String getRootPath(String fileName, HttpServletRequest request) {
+    public static String getRootPath(String fileName, HttpServletRequest request) {
         String rootPath = "/resources/upload";
-        MediaType mediaType = MediaUtils.getMediaType(fileName);
+        MediaType mediaType = MediaUtils.getMediaType(fileName);    // 파일 타입 확인
         if(mediaType!=null)
-            return request.getSession().getServletContext().getRealPath(rootPath+"/images");
-        return request.getSession().getServletContext().getRealPath(rootPath+"/files");
+            return request.getSession().getServletContext().getRealPath(rootPath+"/images");    // 이미지 파일 경로
+        return request.getSession().getServletContext().getRealPath(rootPath+"/files"); // 일반 파일 경로
     }
 
     // 날짜 폴더명 추출
@@ -121,7 +121,11 @@ public class UploadFileUtils {
         }
 
         // 2. 파일 삭제(썸네일 이미지 or 일반 파일)
-        new File(rootPath+fileName.replace('/', File.separatorChar)).delete();
+        try {
+            new File(rootPath + fileName.replace('/', File.separatorChar)).delete();
+        } catch (Exception e){
+            e.getStackTrace();
+        }
     }
 
     // 파일 출력을 위한 HttpHeader 설정

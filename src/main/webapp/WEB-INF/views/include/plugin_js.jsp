@@ -15,3 +15,5 @@
 <script src="dist/js/adminlte.min.js"></script>
 <%-- [12-2] Handlebars --%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+<%-- [15-5] lightbox js --%>
+<script src="bower_components/lightbox/js/lightbox.js"></script>

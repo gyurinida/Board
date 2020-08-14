@@ -10,7 +10,14 @@
 <html>
 
 <%@ include file="../../include/head.jsp"%>
-
+<!-- [15] 파일 업로드 영역 -->
+<style>
+    .fileDrop{
+        width: 100%;
+        height: 200px;
+        border: 2px dotted #0b58a2;
+    }
+</style>
 <body class="hold-transition skin-blue sidebar-mini layout-boxed">
 <div class="wrapper">
 
@@ -36,11 +43,8 @@
         <!-- Main content -->
         <section class="content container-fluid">
 
-            <!--------------------------
-              | Your Page Content Here |
-              -------------------------->
             <div class="col-lg-12">
-                <form role="form" id="writeform" method="post" action="${path}/article/paging/search/write">
+                <form role="form" id="writeForm" method="post" action="${path}/article/paging/search/write">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">게시글 작성</h3>
@@ -58,6 +62,20 @@
                                 <label for="writer">작성자</label>
                                 <input class="form-control" id="writer" name="writer">
                             </div>
+                            <%-- [15-5] 첨부파일 영역 추가 --%>
+                            <div class="form-group">
+                                <div class="fileDrop">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <p class="text-center"><i class="fa fa-paperclip"></i> 첨부파일을 드래그해주세요</p>
+                                </div>
+                            </div>
+                        </div>
+                        <%-- [15-5] 첨부파일 영역 추가 --%>
+                        <div class="box-footer">
+                            <ul class="mailbox-attachments clearfix uploadedFileList"></ul>
                         </div>
                         <div class="box-footer">
                             <button type="button" class="btn btn-primary listBtn"><i class="fa fa-list"></i> 목록</button>
@@ -82,6 +100,24 @@
 <!-- ./wrapper -->
 
 <%@ include file="../../include/plugin_js.jsp"%>
+<%-- [15-5] 첨부파일 출력을 위한 Handlebars 템플릿 --%>
+<script id="fileTemplate" type="text/x-handlebars-template">
+    <li>
+        <span class="mailbox-attachment-icon has-img">
+            <img src="{{imgSrc}}" alt="Attachment">
+        </span>
+        <div class="mailbox-attachment-info">
+            <a href="{{originalFileUrl}}" class="mailbox-attachment-name">
+                <i class="fa fa-paperclip"></i> {{originalFileName}}
+            </a>
+            <a href="{{fullName}}" class="btn btn-default btn-xs pull-right delBtn">
+                <i class="fa fa-fw fa-remove"></i>
+            </a>
+        </div>
+    </li>
+</script>
+<script type="text/javascript" src="dist/js/article_file_upload.js"></script>
+
 <script>
     $(document).ready(function () {
 
@@ -90,6 +126,19 @@
                 + "&perPageNum=${searchCriteria.perPageNum}"
                 + "&searchType=${searchCriteria.searchType}"
                 + "&keyword=${searchCriteria.keyword}";
+        });
+
+        $("#writeForm").submit(function (event) {
+            event.preventDefault();
+            var that = $(this);
+            filesSubmit(that);
+        })
+
+        // 첨부파일 삭제 버튼 클릭
+        $(document).on("click", ".delBtn", function (event) {
+            event.preventDefault();
+            var that = $(this);
+            deleteFileWrtPage(that);
         });
 
     });

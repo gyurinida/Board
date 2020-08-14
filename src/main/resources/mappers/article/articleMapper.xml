@@ -12,6 +12,7 @@
             , writer
             , reg_date
             , view_cnt
+            , file_cnt
         ) VALUES (
             #{articleNo}
             , #{title}
@@ -19,6 +20,7 @@
             , #{writer}
             , #{regDate}
             , #{viewCnt}
+            , #{fileCnt}
         )
     </insert>
 
@@ -30,6 +32,7 @@
             , writer
             , reg_date
             , view_cnt
+            , file_cnt
         FROM
             tbl_article
         WHERE article_no = #{articleNo}
@@ -57,7 +60,8 @@
             content,
             writer,
             reg_date,
-            view_cnt
+            view_cnt,
+            file_cnt
         FROM tbl_article
         WHERE article_no > 0
         ORDER BY article_no DESC, reg_date DESC
@@ -72,7 +76,8 @@
             content,
             writer,
             reg_date,
-            view_cnt
+            view_cnt,
+            file_cnt
         FROM tbl_article
         WHERE article_no > 0
         ORDER BY article_no DESC, reg_date DESC
@@ -89,6 +94,7 @@
             , writer
             , reg_date
             , view_cnt
+            , file_cnt
         FROM tbl_article
         WHERE article_no > 0
         ORDER BY article_no DESC, reg_date DESC
@@ -115,7 +121,8 @@
             writer,
             reg_date,
             view_cnt,
-            reply_cnt
+            reply_cnt,
+            file_cnt
         FROM tbl_article
         WHERE article_no > 0
         ]]>
@@ -196,5 +203,6 @@
         <result property="regDate" column="reg_date" />
         <result property="viewCnt" column="view_cnt" />
         <result property="replyCnt" column="reply_cnt" />
+        <result property="fileCnt" column="file_cnt" />
     </resultMap>
 </mapper>

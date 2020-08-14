@@ -47,6 +47,10 @@
                     <div class="box-body" style="height: 700px">
                         ${article.content}
                     </div>
+                    <!-- [15-6] 업로드 파일 정보 영역 -->
+                    <div class="box-footer uploadFiles">
+                        <ul class="mailbox-attachments clearfix uploadedFileList"></ul>
+                    </div>
                     <div class="box-footer">
                         <div class="user-block">
                             <img class="img-circle img-bordered-sm" src="dist/img/user1-128x128.jpg" alt="user image">
@@ -195,12 +199,29 @@
     </div>
     {{/each}}
 </script>
+<%-- [15-6] 게시글 첨부파일 Handlerbars 파일 템플릿 --%>
+<script id="fileTemplate" type="text/x-handlebars-template">
+    <li data-src="{{fullName}}">
+        <span class="mailbox-attachment-icon has-img">
+            <img src="{{imgSrc}}" alt="Attachment">
+        </span>
+        <div class="mailbox-attachment-info">
+            <a href="{{originalFileUrl}}" class="mailbox-attachment-name">
+                <i class="fa fa-paperclip"></i> {{originalFileName}}
+            </a>
+        </div>
+    </li>
+</script>
+<script type="text/javascript" src="dist/js/article_file_upload.js"></script>
 <script>
     $(document).ready(function () {
 
         <%-- [11-2] 댓글 목록 --%>
         var articleNo = "${article.articleNo}"; // 현재 게시글 번호
         var replyPageNum = 1;                   // 댓글 페이지 번호 초기화
+
+        // [15-6] 첨부파일 목록 출력
+        getFiles(articleNo);
 
         // 댓글 내용: 줄바꿈/공백
         Handlebars.registerHelper("escape", function (replyText) {
@@ -420,6 +441,26 @@
         });
 
         $(".delBtn").on("click", function () {
+
+            // 댓글이 달린 게시글 삭제처리 방지
+            var replyCnt = $(".replyDiv").length;
+            if(replyCnt>0){
+                alert("댓글이 달린 게시글은 삭제할 수 없습니다.");
+                return;
+            }
+
+            // 첨부파일명들을 배열에 저장
+            var arr = [];
+            $(".uploadedFileList li").each(function () {
+                arr.push($(this).attr("data-src"));
+            });
+
+            // 첨부파일 삭제 요청
+            if(arr.length>0){
+                $.post("/freeboard01_war_exploded/article/file/deleteAll", {files: arr}, function () {});
+            }
+
+            // 삭제처리
             formObj.attr("action", "remove");
             formObj.submit();
         });
