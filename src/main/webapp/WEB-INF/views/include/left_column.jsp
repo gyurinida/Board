@@ -15,14 +15,26 @@
 
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel">
-            <div class="pull-left image">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                <p>Alexander Pierce</p>
-                <!-- Status -->
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
+            <c:if test="${empty login}">
+                <div class="pull-left image">
+                    <img src="${path}/resources/upload/user/default-user.png" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>Guest</p>
+                    <!-- Status -->
+                    <a href="#"><i class="fa fa-circle text-danger"></i> OFFLINE</a>
+                </div>
+            </c:if>
+            <c:if test="${not empty login}">
+                <div class="pull-left image">
+                    <img src="/freeboard01_war_exploded/resources/upload/${login.userImg}" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>${login.userName}</p>
+                    <!-- Status -->
+                    <a href="#"><i class="fa fa-circle text-success"></i> ONLINE</a>
+                </div>
+            </c:if>
         </div>
 
         <!-- search form (Optional) -->

@@ -10,8 +10,9 @@
             , title
             , content
             , writer
-            , regdate
-            , viewcnt
+            , reg_date
+            , view_cnt
+            , file_cnt
         ) VALUES (
             #{articleNo}
             , #{title}
@@ -19,6 +20,7 @@
             , #{writer}
             , #{regDate}
             , #{viewCnt}
+            , #{fileCnt}
         )
     </insert>
 
@@ -28,8 +30,9 @@
             , title
             , content
             , writer
-            , regdate
-            , viewcnt
+            , reg_date
+            , view_cnt
+            , file_cnt
         FROM
             tbl_article
         WHERE article_no = #{articleNo}
@@ -49,19 +52,147 @@
         WHERE article_no = #{articleNo}
     </delete>
 
-    <select id="listAll" resultType="ArticleVO">
+    <select id="listAll" resultMap="ArticleResultMap">
         <![CDATA[
         SELECT
             article_no,
             title,
             content,
             writer,
-            regdate,
-            viewcnt
+            reg_date,
+            view_cnt,
+            file_cnt
         FROM tbl_article
         WHERE article_no > 0
-        ORDER BY article_no DESC, regdate DESC
+        ORDER BY article_no DESC, reg_date DESC
         ]]>
+    </select>
+
+    <select id="listPaging" resultMap="ArticleResultMap">
+        <![CDATA[
+        SELECT
+            article_no,
+            title,
+            content,
+            writer,
+            reg_date,
+            view_cnt,
+            file_cnt
+        FROM tbl_article
+        WHERE article_no > 0
+        ORDER BY article_no DESC, reg_date DESC
+        LIMIT #{page}, 10
+        ]]>
+    </select>
+
+    <select id="listCriteria" resultMap="ArticleResultMap">
+        <![CDATA[
+        SELECT
+            article_no
+            , title
+            , content
+            , writer
+            , reg_date
+            , view_cnt
+            , file_cnt
+        FROM tbl_article
+        WHERE article_no > 0
+        ORDER BY article_no DESC, reg_date DESC
+        LIMIT #{pageStart}, #{perPageNum}
+        ]]>
+    </select>
+
+    <select id="countArticles" resultType="int">
+        <![CDATA[
+        SELECT
+            COUNT(article_no)
+        FROM  tbl_article
+        WHERE article_no > 0
+        ]]>
+    </select>
+
+    <!-- [10-4] 검색어 처리 -->
+    <select id="listSearch" resultMap="ArticleResultMap">
+        <![CDATA[
+        SELECT
+            article_no,
+            title,
+            content,
+            writer,
+            reg_date,
+            view_cnt,
+            reply_cnt,
+            file_cnt
+        FROM tbl_article
+        WHERE article_no > 0
+        ]]>
+            <include refid="search" />
+        <![CDATA[
+        ORDER BY article_no DESC, reg_date DESC
+        LIMIT #{pageStart}, #{perPageNum}
+        ]]>
+    </select>
+
+    <select id="countSearchArticles" resultType="int">
+        <![CDATA[
+        SELECT COUNT(article_no)
+        FROM tbl_article
+        WHERE article_no > 0
+        ]]>
+        <include refid="search"/>
+    </select>
+
+    <sql id="search">
+        <if test="searchType!=null">
+            <if test="searchType=='t'.toString()">
+                AND title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType=='c'.toString()">
+                AND content LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType=='w'.toString()">
+                AND writer LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType=='tc'.toString()">
+                AND (
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR content LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="searchType=='cw'.toString()">
+                AND (
+                    content LIKE CONCAT('%', #{keyword}, '%')
+                    OR writer LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="searchType=='tcw'.toString()">
+                AND (
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR content LIKE CONCAT('%', #{keyword}, '%')
+                    OR writer LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+
+        </if>
+    </sql>
+
+    <!-- [14] -->
+    <update id="updateReplyCnt">
+        UPDATE tbl_article
+        SET reply_cnt = reply_cnt + #{amount}
+        WHERE article_no = #{articleNo}
+    </update>
+
+    <select id="getArticleNo" resultType="int">
+        SELECT article_no
+        FROM tbl_reply
+        WHERE reply_no = #{replyNo}
+    </select>
+
+    <select id="updateViewCnt">    <!-- [14-3] -->
+        UPDATE tbl_article
+        SET view_cnt = view_cnt+1
+        WHERE article_no = #{articleNo}
     </select>
 
     <resultMap id="ArticleResultMap" type="ArticleVO">
@@ -69,7 +200,9 @@
         <result property="title" column="title" />
         <result property="content" column="content" />
         <result property="writer" column="writer" />
-        <result property="regDate" column="regdate" />
-        <result property="viewCnt" column="viewcnt" />
+        <result property="regDate" column="reg_date" />
+        <result property="viewCnt" column="view_cnt" />
+        <result property="replyCnt" column="reply_cnt" />
+        <result property="fileCnt" column="file_cnt" />
     </resultMap>
 </mapper>
