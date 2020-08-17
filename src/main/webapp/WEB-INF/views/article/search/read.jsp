@@ -325,7 +325,7 @@
         $(".replyAddBtn").on("click", function () {
             var replyWriterObj = $("#newReplyWriter");
             var replyTextObj = $("#newReplyText");
-            var replyWriter = replyTextObj.val();
+            var replyWriter = replyWriterObj.val();
             var replyText = replyTextObj.val();
 
             // POST

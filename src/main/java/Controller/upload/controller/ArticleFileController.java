@@ -108,4 +108,25 @@ public class ArticleFileController {
         }
         return entity;
     }
+
+    // [15-7] 게시글 첨부파일 삭제: 게시글 수정
+    @RequestMapping(value = "/delete/{articleNo}", method = RequestMethod.POST)
+    public ResponseEntity<String> deleteFile(@PathVariable("articleNo") Integer articleNo,
+                                             String fileName,
+                                             HttpServletRequest request){
+        ResponseEntity<String> entity = null;
+
+        try {
+            UploadFileUtils.deleteFile(fileName, request);
+            articleFileService.deleteFile(fileName, articleNo);
+            entity = new ResponseEntity<>("DELETED", HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return entity;
+    }
+
+
 }

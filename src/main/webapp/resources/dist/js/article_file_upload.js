@@ -82,6 +82,12 @@ function deleteFileWrtPage(that) {
     deleteFile(url, that);
 }
 
+// [15-7] 파일 삭제(수정 페이지): 서버에 저장된 첨부파일과 DB에 저장된 첨부파일 정보 삭제
+function deleteFileModPage(that, articleNo) {
+    var url = "/freeboard01_war_exploded/article/file/delete/" + articleNo;
+    deleteFile(url, that);
+}
+
 // 파일 삭제 AJAX 통신
 function deleteFile(url, that) {
     $.ajax({

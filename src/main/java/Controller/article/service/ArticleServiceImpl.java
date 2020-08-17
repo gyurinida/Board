@@ -44,9 +44,18 @@ public class ArticleServiceImpl implements ArticleService{
         return articleDAO.read(articleNo);
     }
 
+    @Transactional
     @Override
     public void update(ArticleVO articleVO) throws Exception {
+        Integer articleNo = articleVO.getArticleNo();
+        String[] files = articleVO.getFiles();
+
         articleDAO.update(articleVO);
+        articleFileDAO.deleteFiles(articleNo);
+
+        if(files==null) return;
+        for(String fileName : files)
+            articleFileDAO.replaceFile(fileName, articleNo);
     }
 
     @Transactional

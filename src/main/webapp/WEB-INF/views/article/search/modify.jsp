@@ -10,6 +10,13 @@
 <html>
 
 <%@ include file="../../include/head.jsp"%>
+<style>
+    .fileDrop{
+        width: 100%;
+        height: 200px;
+        border: 2px dotted #0b58a2;
+    }
+</style>
 
 <body class="hold-transition skin-blue sidebar-mini layout-boxed">
 <div class="wrapper">
@@ -64,6 +71,19 @@
                                 <label for="writer">작성자</label>
                                 <input class="form-control" id="writer" name="writer" value="${article.writer}" readonly>
                             </div>
+                            <%-- [15-7] --%>
+                            <div class="form-group">
+                                <div class="fileDrop">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <p class="text-center"><i class="fa fa-paperclip"></i> 첨부파일을 드래그해주세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <ul class="mailbox-attachments clearfix uploadedFileList"></ul>
                         </div>
                         <div class="box-footer">
                             <button type="button" class="btn btn-primary listBtn"><i class="fa fa-list"></i> 목록</button>
@@ -88,6 +108,24 @@
 <!-- ./wrapper -->
 
 <%@ include file="../../include/plugin_js.jsp"%>
+<script id="fileTemplate" type="text/x-handlebars-template">
+    <li>
+        <span class="mailbox-attachment-icon has-img">
+            <img src="{{imgSrc}}" alt="Attachment">
+        </span>
+        <div class="mailbox-attachment-info">
+            <a href="{{originalFileUrl}}" class="mailbox-attachments-name">
+                <i class="fa fa-paperclip"></i> {{originalFileName}}
+            </a>
+            <a href="{{fullName}}" class="btn btn-default btn-xs pull-right delBtn">
+                <i class="fa fa-fw fa-remove"></i>
+            </a>
+        </div>
+    </li>
+</script>
+
+<script type="text/javascript" src="dist/js/article_file_upload.js"></script>
+
 <script>
     $(document).ready(function () {
         var formObj = $("form[role='form']");
@@ -108,6 +146,28 @@
             + "&perPageNum=${searchCriteria.perPageNum}"
             + "&searchType=${searchCriteria.searchType}"
             + "&keyword=${searchCriteria.keyword}";
+        });
+
+        <%-- [15-7] 첨부파일 --%>
+        var articleNo = "${article.articleNo}";
+
+        // 첨부파일 삭제 버튼 클릭
+        $(document).on("click", ".delBtn", function (event) {
+            event.preventDefault();
+            if(confirm("첨부파일을 삭제하시겠습니까? 삭제된 파일은 복구할 수 없습니다.")){
+                var that = $(this);
+                deleteFileModPage(that, articleNo);
+            }
+        });
+
+        // 첨부파일 목록 호출
+        getFiles(articleNo);
+
+        // 수정 처리시 첨부파일 정보 처리
+        $("#modifyForm").submit(function (event) {
+            event.preventDefault();
+            var that = $(this);
+            filesSubmit(that);
         });
     });
 </script>
