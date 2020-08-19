@@ -58,9 +58,9 @@
                                 <label for="content">내용</label>
                                 <textarea class="form-control" id="content" name="content" rows="30" placeholder="내용 입력" style="resize: none;"></textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" hidden>
                                 <label for="writer">작성자</label>
-                                <input class="form-control" id="writer" name="writer">
+                                <input class="form-control" id="writer" name="writer" value="${login.userId}" readonly>
                             </div>
                             <%-- [15-5] 첨부파일 영역 추가 --%>
                             <div class="form-group">

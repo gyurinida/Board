@@ -60,6 +60,7 @@
             <mvc:mapping path="/article/paging/search/write"/>
             <mvc:mapping path="/article/paging/search/modify"/>
             <mvc:mapping path="/article/paging/search/remove"/>
+            <mvc:mapping path="/replies"/>
             <mvc:mapping path="user/info"/>
             <ref bean="authInterceptor" />
         </mvc:interceptor>

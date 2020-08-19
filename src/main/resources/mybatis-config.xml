@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="Controller.article.domain.ArticleVO" alias="ArticleVO"/>
-        <typeAlias type="Controller.reply.domain.ReplyVO" alias="ReplyVO"/>
+        <package name="Controller"/>
     </typeAliases>
 </configuration>

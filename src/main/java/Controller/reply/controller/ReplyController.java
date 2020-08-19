@@ -23,6 +23,14 @@ public class ReplyController {
         this.replyService = replyService;
     }
 
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<String> registerGET(){
+        ResponseEntity<String> entity = null;
+        System.out.println("################");
+        System.out.println("ReplyController->registerGET");
+        return entity;
+    }
+
     // 댓글 등록처리
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> register(@RequestBody ReplyVO replyVO){

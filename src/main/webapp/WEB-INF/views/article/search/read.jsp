@@ -69,10 +69,12 @@
                             <input type="hidden" name="keyword" value="${searchCriteria.keyword}">
                         </form>
                         <button type="submit" class="btn btn-primary listBtn"><i class="fa fa-list"></i> 목록</button>
-                        <div class="pull-right">
-                            <button type="submit" class="btn btn-warning modBtn"><i class="fa fa-edit"></i> 수정</button>
-                            <button type="submit" class="btn btn-danger delBtn"><i class="fa fa-trash"></i> 삭제</button>
-                        </div>
+                        <c:if test="${login.userId==article.writer}">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-warning modBtn"><i class="fa fa-edit"></i> 수정</button>
+                                <button type="submit" class="btn btn-danger delBtn"><i class="fa fa-trash"></i> 삭제</button>
+                            </div>
+                        </c:if>
                     </div>
                     <!-- [12-2] 댓글 입력 -->
                     <div class="box-warning">
@@ -80,20 +82,23 @@
                             <a class="link-black text-lg"><i class="fa fa-pencil"></i> 댓글작성</a>
                         </div>
                         <div class="box-body">
-                            <form class="form-horizontal">
-                                <div class="form-group margin">
-                                    <div class="col-sm-10">
+                            <c:if test="${not empty login}">
+                                <form>
+                                    <div class="form-group">
                                         <textarea class="form-control" id="newReplyText" rows="3" placeholder="댓글 내용.." style="resize: none"></textarea>
                                     </div>
-                                    <div class="col-sm-2">
-                                        <input class="form-control" id="newReplyWriter" type="text" placeholder="댓글 작성자..">
+                                    <div class="col-sm-2" hidden>
+                                        <input class="form-control" id="newReplyWriter" type="text" placeholder="댓글 작성자.." value="${login.userId}" readonly>
                                     </div>
-                                    <hr/>
-                                    <div class="col-sm-2">
-                                        <button type="button" class="btn btn-primary btn-block replyAddBtn"><i class="fa fa-save"></i> 저장</button>
-                                    </div>
-                                </div>
-                            </form>
+                                    <button type="button" class="btn btn-primary btn-block replyAddBtn"><i class="fa fa-save"></i> 저장</button>
+                                </form>
+                            </c:if>
+                            <c:if test="${empty login}">
+                                <%-- TODO: 로그인하면 이 페이지로 돌아오지 않음--%>
+                                <a href="${path}/replies" class="btn btn-default btn-block" role="button">
+                                    <i class="fa fa-edit"></i> 로그인 한 사용자만 댓글 등록이 가능합니다.
+                                </a>
+                            </c:if>
                         </div>
                     </div>
                     <!-- [12-2] 댓글 목록/페이징 -->
@@ -178,27 +183,6 @@
 <!-- ./wrapper -->
 
 <%@ include file="../../include/plugin_js.jsp"%>
-<script id="replyTemplate" type="text/x-handlebars-template">
-    {{#each.}}
-    <div class="post replyDiv" data-replyNo={{replyNo}}>
-        <div class="user-block">
-            <img class="img-circle img-bordered-sm" src="/freeboard01_war_exploded/dist/img/user1-128x128.jpg" alt="user image">
-            <span class="username">
-                <a href="#">{{replyWriter}}</a>
-                <a href="#" class="pull-right btn-box-tool replyDelBtn" data-toggle="modal" data-target="#delModal">
-                    <i class="fa fa-times"> 삭제</i>
-                </a>
-                <a href="#" class="pull-right btn-box-tool replyModBtn" data-toggle="modal" data-target="#modModal">
-                    <i class="fa fa-edits"> 수정</i>
-                </a>
-            </span>
-            <span class="description">{{prettifyDate regDate}}</span>
-        </div>
-        <div class="oldReplyText">{{{escape replyText}}}</div>
-        <br/>
-    </div>
-    {{/each}}
-</script>
 <%-- [15-6] 게시글 첨부파일 Handlerbars 파일 템플릿 --%>
 <script id="fileTemplate" type="text/x-handlebars-template">
     <li data-src="{{fullName}}">
@@ -212,6 +196,37 @@
         </div>
     </li>
 </script>
+<%-- [16-4] --%>
+<script id="replyTemplate" type="text/x-handlebars-template">
+    {{#each.}}
+    <div class="post replyDiv" data-replyNo={{replyNo}}>
+        <div class="user-block">
+            <%--댓글 작성자 프로필사진--%>
+            <img class="img-circle img-bordered-sm" src="/freeboard01_war_exploded/resources/upload/user/default-user.png" alt="user image">
+            <%--댓글 작성자--%>
+            <span class="username">
+                <%--작성자 이름--%>
+                <a href="#">{{replyWriter}}</a>
+                {{#eqReplyWriter replyWriter}}
+                <%--댓글 삭제 버튼--%>
+                <a href="#" class="pull-right btn-box-tool replyDelBtn" data-toggle="modal" data-target="#delModal">
+                    <i class="fa fa-times"> 삭제</i>
+                </a>
+                <%--댓글 수정 버튼--%>
+                <a href="#" class="pull-right btn-box-tool replyModBtn" data-toggle="modal" data-target="#modModal">
+                    <i class="fa fa-edit"> 수정</i>
+                </a>
+                {{/eqReplyWriter}}
+            </span>
+            <%--댓글 작성일자--%>
+            <span class="description">{{prettifyDate regDate}}</span>
+        </div>
+        <%--댓글 내용--%>
+        <div class="oldReplyText">{{{escape replyText}}}</div>
+        <br/>
+    </div>
+    {{/each}}
+</script>
 <script type="text/javascript" src="dist/js/article_file_upload.js"></script>
 <script>
     $(document).ready(function () {
@@ -219,6 +234,15 @@
         <%-- [11-2] 댓글 목록 --%>
         var articleNo = "${article.articleNo}"; // 현재 게시글 번호
         var replyPageNum = 1;                   // 댓글 페이지 번호 초기화
+
+        // [16-4]
+        Handlebars.registerHelper("eqReplyWriter", function (replyWriter, block) {
+            var accum = "";
+            if(replyWriter==="${login.userId}"){
+                accum += block.fn()
+            }
+            return accum;
+        });
 
         // [15-6] 첨부파일 목록 출력
         getFiles(articleNo);
@@ -350,7 +374,7 @@
                         getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
 
                         replyTextObj.val("");   // 댓글 내용 초기화
-                        replyWriterObj.val(""); // 댓글 작성자 초기화
+                        //replyWriterObj.val(""); // 댓글 작성자 초기화였지만, [16_회원정보] 기능 적용 후에는 작성자가 초기화 되면 안됨.
                     }
                 }
             });
@@ -406,6 +430,7 @@
         $(".modalDelBtn").on("click", function () {
 
             var replyNo = $(".replyNo").val();
+            console.log(replyNo);
 
             // DELETE
             $.ajax({

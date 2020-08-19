@@ -41,8 +41,8 @@ public class ReplyServiceImpl implements ReplyService{
     @Transactional  // [14]
     @Override
     public void removeReply(Integer replyNo) throws Exception {
+        int articleNo = replyDAO.getArticleNo((replyNo));   // 댓글 삭제 전에, 댓글이 달린 게시글 번호 먼저 받아오기
         replyDAO.delete(replyNo);
-        int articleNo = replyDAO.getArticleNo((replyNo));
         articleDAO.updateReplyCnt(articleNo, -1);   // 댓글 갯수 1 감소
     }
 

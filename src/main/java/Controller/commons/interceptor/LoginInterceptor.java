@@ -11,11 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
+    // 로그인 한 사용자에 대한 정보를 HttpSession에 보관 및 처리
+
     private static final String LOGIN = "login";
     private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 기존의 로그인 정보가 있을 경우 초기화하는 역할
+
         HttpSession httpSession = request.getSession();
 
         // 기존 로그인 정보 제거
@@ -27,7 +31,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler, ModelAndView modelAndView) throws Exception {
+        // httpSession 컨트롤러에서 저장한 user를 저장 후 리다이렉트하는 역할
+
         HttpSession httpSession = request.getSession();
         ModelMap modelMap = modelAndView.getModelMap();
         Object userVO = modelMap.get("user");
@@ -36,6 +43,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             logger.info("New Login Success");
             httpSession.setAttribute(LOGIN, userVO);
             Object destination = httpSession.getAttribute("destination");
+            System.out.println("=====================");
+            System.out.println("LoginInterceptor->postHandle: "+destination);
             response.sendRedirect(destination!=null?(String)destination:"/freeboard01_war_exploded/");
         }
     }
