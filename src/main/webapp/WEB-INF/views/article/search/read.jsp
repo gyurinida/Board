@@ -94,10 +94,15 @@
                                 </form>
                             </c:if>
                             <c:if test="${empty login}">
-                                <%-- TODO: 로그인하면 이 페이지로 돌아오지 않음--%>
+                                <%-- 로그인하면 이 페이지로 돌아오지 않음->해결! --%>
+                                <button type="submit" class="btn btn-default btn-block repliesLoginBtn">
+                                    <i class="fa fa-edit"></i> 로그인 한 사용자만 댓글 등록이 가능합니다.
+                                </button>
+                                <%--
                                 <a href="${path}/replies" class="btn btn-default btn-block" role="button">
                                     <i class="fa fa-edit"></i> 로그인 한 사용자만 댓글 등록이 가능합니다.
                                 </a>
+                                --%>
                             </c:if>
                         </div>
                     </div>
@@ -492,6 +497,12 @@
 
         $(".listBtn").on("click", function () {
             formObj.attr("action", "list");
+            formObj.attr("method", "get");
+            formObj.submit();
+        });
+
+        $(".repliesLoginBtn").on("click", function () {
+            formObj.attr("action", "read/repliesLogin");
             formObj.attr("method", "get");
             formObj.submit();
         });

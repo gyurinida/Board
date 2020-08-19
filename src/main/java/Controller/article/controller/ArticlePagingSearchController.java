@@ -79,6 +79,15 @@ public class ArticlePagingSearchController {
         return "article/search/read";
     }
 
+    // 비로그인 상태에서 댓글 달려고 할 때
+    @RequestMapping(value = "/read/repliesLogin", method = RequestMethod.GET)
+    public String readRepliesLogin(@RequestParam("articleNo") int articleNo,
+                       @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
+                       Model model) throws  Exception{
+
+        return "user/login";
+    }
+
     // [10-6] 수정 페이지 이동 + 목록페이지 정보 유지 + 검색어처리
     @RequestMapping(value = "/modify", method = RequestMethod.GET)
     public String modifyGET(@RequestParam("articleNo") int articleNo,

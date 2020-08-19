@@ -19,11 +19,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         String uri = request.getRequestURI();
         String query = request.getQueryString();
 
-        System.out.println("###################");
-        System.out.println("AuthInterceptor->saveDestination:");
-        System.out.println("uri:" + uri);
-        System.out.println("query:" + query);
-        System.out.println("method:" + request.getMethod());
+        // 댓글을 달기 위해 로그인페이지로 이동할 경우에 대한 처리
+        // from ArticlePagingSearchController.readRepliesLogin
+        if(uri.contains("/read/repliesLogin")){
+            System.out.println(uri.substring(0, uri.indexOf("/repliesLogin")));
+            uri = uri.substring(0, uri.indexOf("/repliesLogin"));
+        }
 
         if(query==null || query.equals("null"))
             query = "";
@@ -41,8 +42,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         // 현재 사용자가 로그인 상태인지 확인 후, 컨트롤러 호출 여부 결정
 
         HttpSession httpSession = request.getSession();
-        System.out.println("###################");
-        System.out.println("AuthInterceptor->preHandle: "+httpSession+"\n");
 
         if(httpSession.getAttribute("login")==null){
             logger.info("Current User Is Not Logged");

@@ -56,8 +56,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             }
 
             Object destination = httpSession.getAttribute("destination");
-            System.out.println("=====================");
-            System.out.println("LoginInterceptor->postHandle: "+destination);
             response.sendRedirect(destination!=null?(String)destination:"/freeboard01_war_exploded/");
         }
     }
