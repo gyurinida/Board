@@ -51,9 +51,11 @@
             , reply_writer
             , reg_date
             , update_date
+            , user_img
         FROM tbl_reply
+        INNER JOIN tbl_user ON user_id = reply_writer
         WHERE article_no = #{articleNo}
-        ORDER BY reply_no
+        ORDER BY reply_no DESC
         LIMIT #{criteria.pageStart}, #{criteria.perPageNum}
     </select>
 
@@ -71,11 +73,12 @@
 
     <resultMap id="ReplyResultMap" type="ReplyVO">
         <id property="replyNo" column="reply_no"/>
-        <result property="ArticleNo" column="article_no"/>
+        <result property="articleNo" column="article_no"/>
         <result property="replyText" column="reply_text"/>
         <result property="replyWriter" column="reply_writer"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
+        <association property="userVO" resultMap="userVOResultMap"/>    <!-- [16-4.5] -->
     </resultMap>
 
     <resultMap id="ArticleResultMap" type="ArticleVO">
@@ -85,5 +88,17 @@
         <result property="writer" column="writer" />
         <result property="regDate" column="reg_date" />
         <result property="viewCnt" column="view_cnt" />
+    </resultMap>
+
+    <!-- [16-4.5] 게시글 작성자의 프로필 이미지 수정 -->
+    <resultMap id="userVOResultMap" type="UserVO">
+        <id property="userId" column="user_id"/>
+        <result property="userPw" column="user_pw" />
+        <result property="userName" column="user_name" />
+        <result property="userEmail" column="user_email" />
+        <result property="userJoinDate" column="user_join_date" />
+        <result property="userSignature" column="user_signature" />
+        <result property="userImg" column="user_img" />
+        <result property="userPoint" column="user_point" />
     </resultMap>
 </mapper>

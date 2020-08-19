@@ -1,5 +1,7 @@
 package Controller.reply.domain;
 
+import Controller.user.domain.UserVO;
+
 import java.util.Date;
 
 public class ReplyVO {
@@ -9,6 +11,9 @@ public class ReplyVO {
     private String replyWriter;
     private Date regDate;
     private Date updateDate;
+
+    // [16-4.5]
+    private UserVO userVO;
 
     public Integer getReplyNo() {
         return replyNo;
@@ -58,6 +63,14 @@ public class ReplyVO {
         this.updateDate = updateDate;
     }
 
+    public UserVO getUserVO() {
+        return userVO;
+    }
+
+    public void setUserVO(UserVO userVO) {
+        this.userVO = userVO;
+    }
+
     @Override
     public String toString() {
         return "ReplyVO{" +
@@ -67,6 +80,7 @@ public class ReplyVO {
                 ", replyWriter='" + replyWriter + '\'' +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
+                ", userVO=" + userVO +
                 '}';
     }
 }

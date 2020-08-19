@@ -202,7 +202,7 @@
     <div class="post replyDiv" data-replyNo={{replyNo}}>
         <div class="user-block">
             <%--댓글 작성자 프로필사진--%>
-            <img class="img-circle img-bordered-sm" src="/freeboard01_war_exploded/resources/upload/user/default-user.png" alt="user image">
+            <img class="img-circle img-bordered-sm" src="/freeboard01_war_exploded/resources/upload/{{userVO.userImg}}" alt="user image">
             <%--댓글 작성자--%>
             <span class="username">
                 <%--작성자 이름--%>
