@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,6 +43,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if(userVO!=null){
             logger.info("New Login Success");
             httpSession.setAttribute(LOGIN, userVO);
+
+            // [17] 쿠키 생성 후, HttpServletResponse에 담아 전송
+            if(request.getParameter("useCookie")!=null){
+                logger.info("Cookie..");
+                // 쿠키 생성
+                Cookie loginCookie = new Cookie("loginCookie", httpSession.getId());
+                loginCookie.setPath("/freeboard01_war_exploded");
+                loginCookie.setMaxAge(60*60*24*7);
+                // 전송
+                response.addCookie(loginCookie);
+            }
+
             Object destination = httpSession.getAttribute("destination");
             System.out.println("=====================");
             System.out.println("LoginInterceptor->postHandle: "+destination);

@@ -36,5 +36,18 @@
         )
     </insert>
 
+    <!-- [17] 로그인 유지 -->
+    <update id="keepLogin">
+        UPDATE tbl_user
+        SET session_key = #{sessionId}
+            , session_limit = #{sessionLimit}
+        WHERE user_id = #{userId}
+    </update>
 
+    <!-- [17] 세션 키 검증 -->
+    <select id="checkUserWithSessionKey" resultMap="userVOResultMap">
+        SELECT *
+        FROM tbl_user
+        WHERE session_key = #{value}
+    </select>
 </mapper>

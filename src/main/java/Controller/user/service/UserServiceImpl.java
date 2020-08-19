@@ -6,6 +6,7 @@ import Controller.user.persistence.UserDAO;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -27,5 +28,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserVO login(LoginDTO loginDTO) throws Exception {
         return userDAO.login(loginDTO);
+    }
+
+    // [17] 로그인 유지
+    @Override
+    public void keepLogin(String userId, String sessionId, Date sessionLimit) throws Exception {
+        userDAO.keepLogin(userId, sessionId, sessionLimit);
+    }
+
+    // [17] loginCookie로 회원정보 조회
+    @Override
+    public UserVO checkLoginBefore(String value) throws Exception {
+        return userDAO.checkUserWithSessionKey(value);
     }
 }

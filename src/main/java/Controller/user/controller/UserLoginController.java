@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/user")
@@ -39,5 +40,13 @@ public class UserLoginController {
             return;
 
         model.addAttribute("user", userVO);
+
+        // [17] 로그인 유지를 선택한 경우
+        if(loginDTO.isUseCookie()){
+            int amount = 60*60*24*7; // 7일
+            Date sessionLimit = new Date(System.currentTimeMillis()+(1000*amount));
+            // 로그인 유지 기간 설정
+            userService.keepLogin(userVO.getUserId(), httpSession.getId(), sessionLimit);
+        }
     }
 }
