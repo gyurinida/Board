@@ -53,7 +53,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="dist/img/user1-128x128.jpg" alt="user image">
+                            <img class="img-circle img-bordered-sm" src="/dist/img/user1-128x128.jpg" alt="user image">
                             <span class="username">
                                 <a href="#">${article.writer}</a>
                             </span>
@@ -207,7 +207,7 @@
     <div class="post replyDiv" data-replyNo={{replyNo}}>
         <div class="user-block">
             <%--댓글 작성자 프로필사진--%>
-            <img class="img-circle img-bordered-sm" src="/freeboard01_war_exploded/resources/upload/{{userVO.userImg}}" alt="user image">
+            <img class="img-circle img-bordered-sm" src="/resources/upload/{{userVO.userImg}}" alt="user image">
             <%--댓글 작성자--%>
             <span class="username">
                 <%--작성자 이름--%>
@@ -232,7 +232,7 @@
     </div>
     {{/each}}
 </script>
-<script type="text/javascript" src="dist/js/article_file_upload.js"></script>
+<script type="text/javascript" src="/dist/js/article_file_upload.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -279,7 +279,7 @@
         });
 
         // 댓글 목록 함수 호출
-        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
+        getReplies("/replies/"+articleNo+"/"+replyPageNum);
 
         // 댓글 목록 함수
         function getReplies(repliesUri) {
@@ -346,7 +346,7 @@
         $(".pagination").on("click", "li a", function (event) {
             event.preventDefault();
             replyPageNum = $(this).attr("href");
-            getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
+            getReplies("/replies/"+articleNo+"/"+replyPageNum);
         })
 
         <%-- [11-2] 댓글 등록 --%>
@@ -360,7 +360,7 @@
             // POST
             $.ajax({
                 type: "post",
-                url: "/freeboard01_war_exploded/replies/",
+                url: "/replies/",
                 headers: {
                     "Content-type": "application/json",
                     "X-HTTP-Method-Override": "POST"
@@ -376,7 +376,7 @@
                     if(result=="regSuccess"){
                         alert("댓글이 등록되었습니다.");
                         replyPageNum = 1;
-                        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum);
+                        getReplies("/replies/"+articleNo+"/"+replyPageNum);
 
                         replyTextObj.val("");   // 댓글 내용 초기화
                         //replyWriterObj.val(""); // 댓글 작성자 초기화였지만, [16_회원정보] 기능 적용 후에는 작성자가 초기화 되면 안됨.
@@ -407,7 +407,7 @@
             // PUT
             $.ajax({
                 type: "put",
-                url: "/freeboard01_war_exploded/replies/" + replyNo,
+                url: "/replies/" + replyNo,
                 headers: {
                     "Content-type": "application/json",
                     "X-HTTP-Method-Override": "PUT"
@@ -420,7 +420,7 @@
                     console.log("result: "+ result);
                     if(result=="modSuccess"){
                         alert("댓글이 수정되었습니다.");
-                        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum); // 댓글 목록 갱신
+                        getReplies("/replies/"+articleNo+"/"+replyPageNum); // 댓글 목록 갱신
                         $("#modModal").modal("hide"); // Modal 닫기
                     }
                 }
@@ -440,7 +440,7 @@
             // DELETE
             $.ajax({
                 type: "delete",
-                url: "/freeboard01_war_exploded/replies/" + replyNo,
+                url: "/replies/" + replyNo,
                 headers: {
                     "Content-type": "application/json",
                     "X-HTTP-Method-Override": "DELETE"
@@ -450,7 +450,7 @@
                     console.log("result: "+ result);
                     if(result=="delSuccess"){
                         alert("댓글이 삭제되었습니다.");
-                        getReplies("/freeboard01_war_exploded/replies/"+articleNo+"/"+replyPageNum); // 댓글 목록 갱신
+                        getReplies("/replies/"+articleNo+"/"+replyPageNum); // 댓글 목록 갱신
                         $("#delModal").modal("hide"); // Modal 닫기
                     }
                 }
@@ -487,7 +487,7 @@
 
             // 첨부파일 삭제 요청
             if(arr.length>0){
-                $.post("/freeboard01_war_exploded/article/file/deleteAll", {files: arr}, function () {});
+                $.post("/article/file/deleteAll", {files: arr}, function () {});
             }
 
             // 삭제처리

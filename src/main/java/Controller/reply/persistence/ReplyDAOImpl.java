@@ -34,12 +34,12 @@ public class ReplyDAOImpl implements ReplyDAO{
 
     @Override
     public void update(ReplyVO replyVO) throws Exception {
-        sqlSession.insert(NAMESPACE+".update", replyVO);
+        sqlSession.update(NAMESPACE+".update", replyVO);
     }
 
     @Override
     public void delete(Integer replyNO) throws Exception {
-        sqlSession.insert(NAMESPACE+".delete", replyNO);
+        sqlSession.delete(NAMESPACE+".delete", replyNO);
     }
 
     // [11-3] 댓글 페이징

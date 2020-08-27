@@ -109,7 +109,7 @@
 
     // 댓글 목록 출력
     function getReplies() {
-        $.getJSON("/freeboard01_war_exploded/replies/all/"+articleNo, function (data) {
+        $.getJSON("/replies/all/"+articleNo, function (data) {
             console.log(data);
 
             var str = "";
@@ -138,7 +138,7 @@
         // POST
         $.ajax({
            type: "post",
-           url: "/freeboard01_war_exploded/replies",
+           url: "/replies",
            headers: {
                "Content-type": "application/json",
                "X-HTTP-Method-Override": "POST"
@@ -180,7 +180,7 @@
         // DELETE
         $.ajax({
             type: "delete",
-            url: "/freeboard01_war_exploded/replies/" + replyNo,
+            url: "/replies/" + replyNo,
             headers: {
                 "Content-type": "application/json",
                 "X-HTTP-Method-Override": "DELETE"
@@ -207,7 +207,7 @@
         // PUT
         $.ajax({
             type: "put",
-            url: "/freeboard01_war_exploded/replies/" + replyNo,
+            url: "/replies/" + replyNo,
             headers: {
                 "Content-type": "application/json",
                 "X-HTTP-Method-Override": "PUT"
@@ -229,7 +229,7 @@
 
     // 댓글 목록 출력 + 페이징
     function getRepliesPaging(page) {
-        $.getJSON("/freeboard01_war_exploded/replies/"+ articleNo + "/" + page, function (data) {
+        $.getJSON("/replies/"+ articleNo + "/" + page, function (data) {
             console.log(data);
 
             var str = "";

@@ -32,7 +32,7 @@
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label>
-                            <input type="checkbox" name="useCookie"> 로그인 유지
+                            <input type="checkbox" name="useCookie"> 로그인유지
                         </label>
                     </div>
                 </div>
@@ -69,11 +69,10 @@
     else if(msg==="FAILURE")
         alert("아이디와 비밀번호를 확인해주세요");
 
-    $(function () {
-        // TODO: TypeError: undefined is not a function (near '...$('input').iCheck...')
+    $(document).ready(function(){
         $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green',
             increaseArea: '20%' // optional
         });
     });

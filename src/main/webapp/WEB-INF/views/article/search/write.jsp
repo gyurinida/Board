@@ -116,7 +116,7 @@
         </div>
     </li>
 </script>
-<script type="text/javascript" src="dist/js/article_file_upload.js"></script>
+<script type="text/javascript" src="/dist/js/article_file_upload.js"></script>
 
 <script>
     $(document).ready(function () {

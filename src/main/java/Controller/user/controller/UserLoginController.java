@@ -67,7 +67,7 @@ public class UserLoginController {
             httpSession.invalidate();
             Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
             if(loginCookie!=null){
-                loginCookie.setPath("/freeboard01_war_exploded");
+                loginCookie.setPath("/");
                 loginCookie.setMaxAge(0);
                 response.addCookie(loginCookie);
                 userService.keepLogin(userVO.getUserId(), "none", new Date());

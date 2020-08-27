@@ -49,14 +49,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 logger.info("Cookie..");
                 // 쿠키 생성
                 Cookie loginCookie = new Cookie("loginCookie", httpSession.getId());
-                loginCookie.setPath("/freeboard01_war_exploded");
+                loginCookie.setPath("/");
                 loginCookie.setMaxAge(60*60*24*7);
                 // 전송
                 response.addCookie(loginCookie);
             }
 
             Object destination = httpSession.getAttribute("destination");
-            response.sendRedirect(destination!=null?(String)destination:"/freeboard01_war_exploded/");
+            response.sendRedirect(destination!=null?(String)destination:"/");
         }
     }
 }

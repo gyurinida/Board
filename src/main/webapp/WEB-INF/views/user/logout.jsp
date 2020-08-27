@@ -13,7 +13,7 @@
 <body>
 <script>
     alert("로그아웃 되었습니다.");
-    self.location = "/freeboard01_war_exploded";
+    self.location = "/";
 </script>
 </body>
 </html>

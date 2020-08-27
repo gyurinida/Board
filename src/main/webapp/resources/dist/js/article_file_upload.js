@@ -31,7 +31,7 @@ fileDropDiv.on("drop", function (event) {
 // 파일 업로드 AJAX
 function uploadFile(formData) {
     $.ajax({
-        url: "/freeboard01_war_exploded/article/file/upload",
+        url: "/article/file/upload",
         data: formData,
         dataType: "text",
         // processData: 데이터를 일반적인 query string으로 변환처리할 것인지
@@ -78,13 +78,13 @@ function filesSubmit(that) {
 
 // 파일 삭제(입력 페이지): 첨부파일만 삭제처리
 function deleteFileWrtPage(that) {
-    var url = "/freeboard01_war_exploded/article/file/delete";
+    var url = "/article/file/delete";
     deleteFile(url, that);
 }
 
 // [15-7] 파일 삭제(수정 페이지): 서버에 저장된 첨부파일과 DB에 저장된 첨부파일 정보 삭제
 function deleteFileModPage(that, articleNo) {
-    var url = "/freeboard01_war_exploded/article/file/delete/" + articleNo;
+    var url = "/article/file/delete/" + articleNo;
     deleteFile(url, that);
 }
 
@@ -113,18 +113,18 @@ function getFileInfo(fullName) {
 
     // 이미지 파일이면
     if(checkImageType(fullName)){
-        imgSrc = "/freeboard01_war_exploded/article/file/display?fileName=" + fullName;  // 썸네일 이미지 링크
+        imgSrc = "/article/file/display?fileName=" + fullName;  // 썸네일 이미지 링크
         uuidFileName = fullName.substr(14);
         var originalImg = fullName.substr(0, 12 )+fullName.substr(14);
         // 원본 이미지 요청 링크
-        originalFileUrl = "/freeboard01_war_exploded/article/file/display?fileName="+originalImg;
+        originalFileUrl = "/article/file/display?fileName="+originalImg;
     }
     else{
         // 파일 아이콘 이미지
-        imgSrc = "/freeboard01_war_exploded/resources/upload/files/file-icon.png";
+        imgSrc = "/resources/upload/files/file-icon.png";
         uuidFileName = fullName.substr(12);
         // 파일 다운로드 요청 링크
-        originalFileUrl = "/freeboard01_war_exploded/article/file/display?fileName=" + fullName;
+        originalFileUrl = "/article/file/display?fileName=" + fullName;
     }
     originalFileName = uuidFileName.substr(uuidFileName.indexOf("_")+1);
 
@@ -139,7 +139,7 @@ function checkImageType(fullName) {
 
 // 파일 목록: 게시글 조회, 수정 페이지
 function getFiles(articleNo) {
-    $.getJSON("/freeboard01_war_exploded/article/file/list/"+articleNo, function (list) {
+    $.getJSON("/article/file/list/"+articleNo, function (list) {
 
         if(list.length==0){
             $(".uploadedFileList").html("<span class='noAttach'>첨부파일이 없습니다.</span>");

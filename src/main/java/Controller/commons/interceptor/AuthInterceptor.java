@@ -15,7 +15,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     // [16-3.10] 페이지 요청 정보 저장: 로그인 후 원하던 페이지로 이동하게끔
     private void saveDestination(HttpServletRequest request){
-        // TODO: 이전의 destination이 남아있는 문제도 해결해야 함
         String uri = request.getRequestURI();
         String query = request.getQueryString();
 
@@ -46,7 +45,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         if(httpSession.getAttribute("login")==null){
             logger.info("Current User Is Not Logged");
             saveDestination(request);
-            response.sendRedirect("/freeboard01_war_exploded/user/login");
+            response.sendRedirect("/user/login");
             return false;
         }
         return true;

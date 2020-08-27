@@ -49,7 +49,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="dist/img/user1-128x128.jpg" alt="user image">
+                            <img class="img-circle img-bordered-sm" src="/dist/img/user1-128x128.jpg" alt="user image">
                             <span class="username">
                                 <a href="#">${article.writer}</a>
                             </span>
