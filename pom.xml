@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.11.0</version>
+            <version>2.13.4.1</version>
         </dependency>
 
         <!-- [13] AspectJ: AOP기능을 적용할 때 AspectJ 언어 사용 -->
